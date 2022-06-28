@@ -1,6 +1,6 @@
-# The Ratlas dataset
+# The Ratlas datasets
 
-The Ratlas single-nucleus RNA-seq (snRNA-seq) dataset is currently composed of the following:
+The Ratlas single-nucleus RNA-seq (snRNA-seq) datasets are currently composed of the following:
 
 __1) The rat nucleus accumbens (NAc), with samples taken from four experimental groups:__
 
@@ -58,4 +58,4 @@ All Day lab resources may be found at the [Day Lab website](http://day-lab.org/r
 
 ### About the app:
 
-This app was developed by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. For questions about the app, please send an email to lianov@uab.edu
+This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. For questions about the app, please send an to lianov@uab.edu
