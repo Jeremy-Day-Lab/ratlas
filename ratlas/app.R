@@ -2,7 +2,6 @@
 # Author: Lara Ianov | U-BDS
 #------------ Configuration of the data --------------------
 library(Seurat)
-library(Signac)
 library(cowplot)
 library(shiny)
 library(shinyjs)
@@ -23,7 +22,6 @@ main_panel_style <- "overflow-y:scroll; max-height: 1250px; max-width: 1100px; b
 All_Groups_log_rn6_rn7 <- readRDS(file = "./lean_datasets/All_Groups_log_rn7.rds")
 Culture_log_rn6_rn7 <- readRDS(file = "./lean_datasets/Culture_log_rn7.rds")
 VTA_dataset_rn6_rn7 <- readRDS(file = "./lean_datasets/VTA_dataset_rn7.rds")
-NAc_snATAC_0045 <- readRDS(file = "./lean_datasets/NAc_snATAC_2020_0045.rds")
 
 #--------------------------- ADULT Seurat object ordering ----------------------
 # ordering ident for violin
@@ -39,10 +37,6 @@ Idents(object = Culture_log_rn6_rn7) <- factor(Idents(Culture_log_rn6_rn7), leve
 # ordering ident for violin
 cluster_names_VTA <- sort(as.character(unique(VTA_dataset_rn6_rn7@meta.data$CellType)))
 Idents(object = VTA_dataset_rn6_rn7) <- factor(Idents(VTA_dataset_rn6_rn7),levels = cluster_names_VTA)
-
-#--------------------------- NAc_snATAC_0045 Seurat object ordering ----------------------
-cluster_names_NAc_snATAC_0045 <- sort(as.character(unique(NAc_snATAC_0045@meta.data$CellType)))
-Idents(object = NAc_snATAC_0045) <- factor(Idents(NAc_snATAC_0045),levels = cluster_names_NAc_snATAC_0045)
 
 #----------------------- app -------------------------------
 ui <- function(){
@@ -112,15 +106,6 @@ ui <- function(){
                                                 )
                                     )
                            ),
-
-                           tabPanel(title = "Adult NAc - snATAC", #TODO: placeholder name; will need to think of more specific name as there may be other similar datasets in the future
-                                    sh_layout_UI(id = "adult_nac_ATAC",
-                                                 group_choices = adult_groups_browser,
-                                                 plot_choices = atac_plots,
-                                                 cluster_names = cluster_names_NAc_snATAC_0045,
-                                                 correlation_label = no_EES
-                                    )
-                           )
                 ),
                 tags$head(
                   tags$style(HTML(".shiny-output-error-validation {
@@ -164,12 +149,6 @@ server <- function(input, output) {
              UMAP_label = "The Rat VTA",
              EES_absent = "yes",
              assay = "RNArn7")
-  
-  callModule(sh_layout, id = "adult_nac_ATAC", 
-             dataset = NAc_snATAC_0045, 
-             UMAP_label = "The Rat NAc snATAC (7 consecutive day Veh/cocaine treatment)", #TODO: check with PI this label is good
-             EES_absent = "yes",
-             assay = "ATAC")
 }
 
 shinyApp(ui = ui, server = server)

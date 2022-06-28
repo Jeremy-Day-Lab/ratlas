@@ -24,7 +24,6 @@ no_EES <- "Type a gene to correlate to gene name selected above"
 
 all_plots <- c("UMAP","FeaturePlot","Violin", "EES_FeaturePlot","EES_Violin", "Correlation_plot")
 subset_plots <- c("UMAP","FeaturePlot","Violin","Correlation_plot")
-atac_plots <- c("UMAP", "CoveragePlot", "CoveragePlot_genome")
 
 sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correlation_label) {
     ns <- NS(id)
@@ -130,69 +129,6 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                    icon("chart-line"),
                                    style="color: #ededed; background-color: #232a30"),
                       ns = ns),
-                    conditionalPanel(
-                      condition = "input.plots.indexOf('CoveragePlot') > -1 || input.plots.indexOf('CoveragePlot_genome') > -1",
-
-                      checkboxGroupInput(inputId = ns("cluster_browser"),
-                                         label = "CoveragePlot plot option: choose all or show specific clusters",
-                                         choices = cluster_names,
-                                         selected = cluster_names) %>%
-                        shinyhelper::helper(icon = "info-circle",
-                                            colour ="#232a30",
-                                            type = "markdown",
-                                            content = "CoveragePlot_help"
-                        ),
-                      
-                      actionButton(inputId = ns("cluster_selection_browser"),
-                                   label = "Plot selected clusters",
-                                   icon("check"),
-                                   style="color: #ededed; background-color: #232a30") %>%
-                        shinyhelper::helper(icon = "info-circle",
-                                            colour ="#232a30",
-                                            type = "markdown",
-                                            content = "Plot_selected_clusters"
-                        ),
-                      
-                      actionButton(inputId = ns("reset_browser_clusters"),
-                                   label = "Clear all cluster choices",
-                                   icon("redo"),
-                                   style="color: #ededed; background-color: #232a30"),
-                      
-                      actionButton(inputId = ns("select_all_browser_clusters"),
-                                   label = "Check all cluster choices",
-                                   icon("check-double"),
-                                   style="color: #ededed; background-color: #232a30"),
-                      
-                      selectInput(inputId = ns("show_bulk"),
-                                  label = "Plot pseudo-bulk track",
-                                  choices = c(TRUE, FALSE),
-                                  selected = FALSE,
-                                  multiple = FALSE),
-                      hr(),
-                      ns = ns),
-                    conditionalPanel(
-                      condition = "input.plots.indexOf('CoveragePlot') > -1",
-                      
-                      selectInput(inputId = ns("extend_window"),
-                                  label = "Choose number of bases to extend the region down/upstream of gene. Max: 5000",
-                                  choices = c(0,1000,2000,3000,4000,5000),
-                                  selected = 1000,
-                                  multiple = FALSE),
-                      
-                      hr(),
-                      ns = ns),
-                    conditionalPanel(
-                      condition = "input.plots.indexOf('CoveragePlot_genome') > -1",
-                      textInput(inputId = ns("genome_coords"),
-                                label = "Choose a genomic coordinate instead or in addition to a gene name",
-                                placeholder = "1-172934-175664"),
-                      
-                      actionButton(inputId = ns("go_cords"),
-                                   label = "Update coordinates!",
-                                   icon("dna"),
-                                   style="color: #ededed; background-color: #232a30"),
-                      hr(),
-                      ns = ns),
                       ),
         
         mainPanel(width = 9, style = main_panel_style,
@@ -225,17 +161,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                     condition = "input.plots.indexOf('Correlation_plot') > -1",
                     plotOutput(ns("Correlation_plot")) %>% 
                       shinycssloaders::withSpinner(),
-                    ns = ns),
-                  conditionalPanel(
-                    condition = "input.plots.indexOf('CoveragePlot') > -1",
-                    plotOutput(ns("CoveragePlot"), height = "1000px") %>% 
-                      shinycssloaders::withSpinner(),
-                    ns = ns),
-                  conditionalPanel(
-                    condition = "input.plots.indexOf('CoveragePlot_genome') > -1",
-                    plotOutput(ns("CoveragePlot_genome"), height = "1000px") %>% 
-                      shinycssloaders::withSpinner(),
-                    ns = ns))
+                    ns = ns)
+                  )
     )
 }
 
@@ -254,7 +181,7 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
       EES_FeaturePlot(Seurat_object = dataset, split_type = input$group)
     })
     
-    #----------------------------------cluster selection outside of ATAC browser-----------------------------------------
+    #----------------------------------cluster selection outside for non-ATAC visualization -----------------------------------------
     
     # #NOTE ignoreNULL = F to ensure that when there is no selection at launch, the user only needs to click on Update gene
     update_cluster <- eventReactive(input$cluster_selection, {input$cluster},
@@ -315,44 +242,5 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
                       features = update_gene(), features2 = update_feature_corr(), idents = input$cluster_corr,
                       assay = assay)
     })
-    
-    #----------------------------------cluster selection __for__ ATAC browser-----------------------------------------
-    
-    #NOTE ignoreNULL = F to ensure that when there is no selection at launch, the user only needs to click on Update gene
-    update_cluster_browser <- eventReactive(input$cluster_selection_browser, {input$cluster_browser},
-                                            ignoreNULL = FALSE)
-    
-    # option to clear or select all checkboxes in ATAC browser
-    
-    observeEvent(input$reset_browser_clusters, {
-      updateCheckboxGroupInput(session, "cluster_browser", 
-                               choices = sort(as.character(unique(dataset@meta.data$CellType))), 
-                               selected = NULL)
-    })
-    
-    observeEvent(input$select_all_browser_clusters, {
-      updateCheckboxGroupInput(session, "cluster_browser", 
-                               choices = sort(as.character(unique(dataset@meta.data$CellType))), 
-                               selected = sort(as.character(unique(dataset@meta.data$CellType))))
-    })
-    
-    #-----------------------------------------------------------------------------------------------------------------------
 
-    output$CoveragePlot <- renderPlot({
-      CoveragePlot_ratlas(Seurat_object = dataset, split_type = input$group,
-                          region = update_gene(), extend_window = as.numeric(input$extend_window),
-                          show_bulk = input$show_bulk, idents = update_cluster_browser(),
-                          assay = assay)
-    })
-
-    update_cord <- eventReactive(input$go_cords, {validate_cords(input$genome_coords,dataset, assay = assay)})
-    
-    # optionally provide a second plot for genomic coordinates
-    output$CoveragePlot_genome <- renderPlot({
-      CoveragePlot_ratlas(Seurat_object = dataset, split_type = input$group,
-                          region = update_cord(), extend_window = 0,
-                          show_bulk = input$show_bulk, idents = update_cluster_browser(),
-                          assay = assay)
-    })
-    
 }
