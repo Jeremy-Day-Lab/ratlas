@@ -1,0 +1,5 @@
+# this directory should always remain empty in git repo
+# to be used as host location for logs (mount to container with `-v`)
+*
+!.gitignore
+
