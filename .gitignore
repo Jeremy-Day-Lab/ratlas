@@ -1,0 +1,9 @@
+# OS generated file and R-related files/etc. to keep repo clean
+
+.DS_Store
+.Rhistory
+.RData
+.bash_history
+.local
+shiny_app_logs/*.log
+ratlas/*.Rprofvis
