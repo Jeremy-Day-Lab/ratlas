@@ -105,7 +105,7 @@ ui <- function(){
                                                          )
                                                 )
                                     )
-                           ),
+                           )
                 ),
                 tags$head(
                   tags$style(HTML(".shiny-output-error-validation {
