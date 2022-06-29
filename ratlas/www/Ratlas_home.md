@@ -42,7 +42,7 @@ __3) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
 
 Katherine E. Savell\*, Jennifer J. Tuscher\*, Morgan E. Zipperly\*, Corey G. Duke\*, Robert A.Phillips III\*, Allison J. Bauman, Saakshi Thukral, Faraz A. Sultan, Nicholas A. Goska, Lara Ianov, Jeremy J. Day (Science Advances, June, 2020). [_A dopamine-induced gene expression signature regulates neuronal function and cocaine response_](https://advances.sciencemag.org/content/6/26/eaba4221) DOI: 10.1126/sciadv.aba4221
 
-Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D., Ianov, L., & Day, J.J. (Cell Reports, April, 2022). [_An atlas of transcriptionally defined cell populations in the rat ventral tegmental area._](https://www.cell.com/cell-reports/fulltext/S2211-1247(22)00364-3) DOI: <https://doi.org/10.1016/j.celrep.2022.110616>
+Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D., Ianov, L., & Day, J.J. (Cell Reports, April, 2022). [_An atlas of transcriptionally defined cell populations in the rat ventral tegmental area._](https://www.cell.com/cell-reports/fulltext/S2211-1247%2822%2900364-3) DOI: <https://doi.org/10.1016/j.celrep.2022.110616>
 
 ### Links:
 
