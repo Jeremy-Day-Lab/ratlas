@@ -53,7 +53,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                      checkboxGroupInput(inputId = ns("plots"),
                                         label = "Choose which plot(s) to display",
                                         choices = plot_choices,
-                                        selected = c("UMAP"),
+                                        selected = c("UMAP","FeaturePlot","Violin"),
                                         inline = TRUE),
                      hr(),
             
