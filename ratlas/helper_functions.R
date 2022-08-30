@@ -189,7 +189,7 @@ EES_FeaturePlot <- function(Seurat_object, split_type = "All") {
         labs(title = "", x = NULL, caption = "UMAP_1")
     }
     
-    plot_grid(plotlist = EES_UMAP_l, align = TRUE, labels = "EES")
+    plot_grid(plotlist = EES_UMAP_l, align = TRUE, labels = "EES") + theme(plot.margin = unit(c(0,0,1,0), "cm"))
     
   }
 }

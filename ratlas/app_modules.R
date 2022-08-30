@@ -20,6 +20,9 @@ all_VTA_groups <- c("All", "Sex")
 contains_EES <- "Type a gene or EES to correlate to gene name typed above"
 no_EES <- "Type a gene to correlate to gene name selected above"
 
+# footer of saved figs
+caption_label <- "Source: Ratlas | Day Lab"
+
 ##### plots available
 
 all_plots <- c("UMAP","FeaturePlot","Violin", "EES_FeaturePlot","EES_Violin", "Correlation_plot")
@@ -55,6 +58,23 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                         choices = plot_choices,
                                         selected = c("UMAP","FeaturePlot","Violin"),
                                         inline = TRUE),
+                     
+                     sliderInput(inputId = ns("width"),
+                                 label = "Width (pixels) for downloading plot",
+                                 value = 800,
+                                 min = 400,
+                                 max = 2000,
+                                 step = 100,
+                                 round = TRUE),
+                     
+                     sliderInput(inputId = ns("height"),
+                                 label = "Height (pixels) for downloading plot",
+                                 value = 800,
+                                 min = 400,
+                                 max = 2000,
+                                 step = 100,
+                                 round = TRUE),
+                     
                      hr(),
             
                     # conditional panels based on user choice of plots
@@ -141,11 +161,13 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                     condition = "input.plots.indexOf('EES_FeaturePlot') > -1",
                     plotOutput(ns("EES_FeaturePlot")) %>% 
                       shinycssloaders::withSpinner(),
+                    downloadButton(ns("EES_FeaturePlot_downl"), label = "Download EES FeaturePlot"),
                     ns = ns),
                   conditionalPanel(
                     condition = "input.plots.indexOf('EES_Violin') > -1",
                     plotOutput(ns("EES_Violin")) %>% 
                       shinycssloaders::withSpinner(),
+                    downloadButton(ns("EES_Violin_downl"), label = "Download EES Violin"),
                     ns = ns),
                   conditionalPanel(
                     condition = "input.plots.indexOf('FeaturePlot') > -1",
@@ -153,14 +175,26 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                       shinycssloaders::withSpinner(),
                     ns = ns),
                   conditionalPanel(
+                    condition = "output.FeaturePlot",
+                    downloadButton(ns("FeaturePlot_downl"), label = "Download FeaturePlot"),
+                    ns = ns), # downloadButton have their own conditional dependent upon output (for genes, not EES)
+                  conditionalPanel(
                     condition = "input.plots.indexOf('Violin') > -1",
                     plotOutput(ns("Violin")) %>% 
                       shinycssloaders::withSpinner(),
                     ns = ns),
                   conditionalPanel(
+                    condition = "output.Violin",
+                    downloadButton(ns("Violin_downl"), label = "Download Violin"),
+                    ns = ns),
+                  conditionalPanel(
                     condition = "input.plots.indexOf('Correlation_plot') > -1",
                     plotOutput(ns("Correlation_plot")) %>% 
                       shinycssloaders::withSpinner(),
+                    ns = ns),
+                  conditionalPanel(
+                    condition = "output.Correlation_plot",
+                    downloadButton(ns("Correlation_downl"), label = "Download correlation plot"),
                     ns = ns)
                   )
     )
@@ -176,11 +210,33 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
       DimPlot(object = dataset, reduction = "umap", label = TRUE,
               label.size = 5) + NoLegend() + ggtitle(label = UMAP_label)
     })
-    
-    output$EES_FeaturePlot <- renderPlot({
+
+    # make plots in reactive code repetition when saving figs
+    ees_featureplot <- reactive({
       EES_FeaturePlot(Seurat_object = dataset, split_type = input$group)
     })
     
+    output$EES_FeaturePlot <- renderPlot({
+      ees_featureplot()
+    })
+    
+    output$EES_FeaturePlot_downl <- downloadHandler(
+      filename = function() { "EES_FeaturePlot_Ratlas.png" },
+      
+      content = function(file) {
+        png(file, height = input$height, width = input$width)
+        
+        # adding footer to plot_grid requires a different process:
+        
+        if (input$group == "All") {
+          plot(ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+        } else {
+          plot(ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold"))
+        }
+        
+        dev.off()
+      }
+    )
     #----------------------------------cluster selection outside for non-ATAC visualization -----------------------------------------
     
     # #NOTE ignoreNULL = F to ensure that when there is no selection at launch, the user only needs to click on Update gene
@@ -202,34 +258,65 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     })
     #-----------------------------------------------------------------------------------------------------------------------
 
-    output$EES_Violin <- renderPlot({
+    ees_violin <- reactive({
       VlnPlot_single_dataset(Seurat_object = dataset, split_type = input$group, features = "EES", idents = update_cluster(),
                              assay = assay)
     })
+    
+    output$EES_Violin <- renderPlot({
+      ees_violin()
+    })
+    
+    output$EES_Violin_downl <- downloadHandler(
+      filename = function() { "EES_Violin_Ratlas.png" },
+      
+      content = function(file) {
+        png(file, height = input$height, width = input$width)
+        
+        plot(ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+    
+        dev.off()
+      }
+    )
 
     update_gene <- eventReactive(input$go, {rat_nomenclature(input$gene,dataset,assay)})
-
-    output$FeaturePlot <- renderPlot({
-      
+    
+    featureplot <- reactive({
       #change assay as needed for input:
-
+      
       if (input$group == "All") {
         FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
                     cols = c("lightgrey", "#0072B2"),
                     features = update_gene(),
                     max.cutoff = input$expression,
                     split.by = NULL)
-        } else {
-          FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
-                      cols = c("lightgrey", "#0072B2"),
-                      features = update_gene(),
-                      max.cutoff = input$expression,
-                      split.by = input$group)
-        }
+      } else {
+        FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
+                    cols = c("lightgrey", "#0072B2"),
+                    features = update_gene(),
+                    max.cutoff = input$expression,
+                    split.by = input$group)
+      }
+    })
+
+    output$FeaturePlot <- renderPlot({
+      featureplot()
     })
     
+    output$FeaturePlot_downl <- downloadHandler(
+      filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.png") },
+      
+      content = function(file) {
+        png(file, height = input$height, width = input$width)
+        
+        plot(featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+        
+        dev.off()
+      }
+    )
+    
     observeEvent(input$reset, {shinyjs::reset("expression")})
-
+    #TODO: add add handlers for violin and correlation plots
     output$Violin <- renderPlot({
       VlnPlot_single_dataset(Seurat_object = dataset, split_type = input$group, features = update_gene(), idents = update_cluster(),
                              assay = assay)
@@ -242,5 +329,4 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
                       features = update_gene(), features2 = update_feature_corr(), idents = input$cluster_corr,
                       assay = assay)
     })
-
 }
