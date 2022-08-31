@@ -205,7 +205,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
 # not all datasets have EES in metadata, thus indicated by argument EES_absent
 
 sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = "no", assay = "RNA") {
-    
+  
     output$UMAP <- renderPlot({
       DimPlot(object = dataset, reduction = "umap", label = TRUE,
               label.size = 5) + NoLegend() + ggtitle(label = UMAP_label)
@@ -304,7 +304,7 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     })
     
     output$FeaturePlot_downl <- downloadHandler(
-      filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.png") },
+      filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_FeaturePlot_Ratlas.png") },
       
       content = function(file) {
         png(file, height = input$height, width = input$width)
@@ -316,17 +316,54 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     )
     
     observeEvent(input$reset, {shinyjs::reset("expression")})
-    #TODO: add add handlers for violin and correlation plots
-    output$Violin <- renderPlot({
+
+    violin <- reactive({
       VlnPlot_single_dataset(Seurat_object = dataset, split_type = input$group, features = update_gene(), idents = update_cluster(),
                              assay = assay)
     })
     
+    
+    output$Violin <- renderPlot({
+      violin()
+    })
+    
+    
+    output$Violin_downl <- downloadHandler(
+      filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.png") },
+      
+      content = function(file) {
+        png(file, height = input$height, width = input$width)
+        
+        plot(violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+        
+        dev.off()
+      }
+    )
+    
+    
     update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
     
-    output$Correlation_plot <- renderPlot({
+    corr_plot <- reactive({
       Scatter_feature(Seurat_object = dataset, split_type = input$group, 
                       features = update_gene(), features2 = update_feature_corr(), idents = input$cluster_corr,
                       assay = assay)
     })
+    
+    output$Correlation_plot <- renderPlot({
+      corr_plot()
+    })
+    
+    output$Correlation_downl <- downloadHandler(
+      filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay), "_",
+                                     feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay),
+                                     "_Correlation_Ratlas.png") },
+      
+      content = function(file) {
+        png(file, height = input$height, width = input$width)
+        
+        plot(corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+        
+        dev.off()
+      }
+    )
 }
