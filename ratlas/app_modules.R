@@ -150,6 +150,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                 style="color: #ededed; background-color: #232a30"),
                    ns = ns),
     ),
+    # downloadButton have their own conditional dependent upon output as well (for genes, not EES)
+    # to ensure the button doesn't show up when no gene is selected or if an error is shown
     mainPanel(width = 9, style = main_panel_style,
               conditionalPanel(
                 condition = "input.plots.indexOf('UMAP') > -1",
@@ -174,16 +176,16 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                   shinycssloaders::withSpinner(),
                 ns = ns),
               conditionalPanel(
-                condition = "output.FeaturePlot",
+                condition = "output.FeaturePlot && input.plots.indexOf('FeaturePlot') > -1",
                 downloadButton(ns("FeaturePlot_downl"), label = "Download FeaturePlot"),
-                ns = ns), # downloadButton have their own conditional dependent upon output (for genes, not EES)
+                ns = ns),
               conditionalPanel(
                 condition = "input.plots.indexOf('Violin') > -1",
                 plotOutput(ns("Violin")) %>% 
                   shinycssloaders::withSpinner(),
                 ns = ns),
               conditionalPanel(
-                condition = "output.Violin",
+                condition = "output.Violin && input.plots.indexOf('Violin') > -1",
                 downloadButton(ns("Violin_downl"), label = "Download Violin"),
                 ns = ns),
               conditionalPanel(
@@ -192,7 +194,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                   shinycssloaders::withSpinner(),
                 ns = ns),
               conditionalPanel(
-                condition = "output.Correlation_plot",
+                condition = "output.Correlation_plot && input.plots.indexOf('Correlation_plot') > -1",
                 downloadButton(ns("Correlation_downl"), label = "Download correlation plot"),
                 ns = ns)
     )
