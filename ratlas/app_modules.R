@@ -81,7 +81,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                  conditionalPanel(
                    condition = "input.plots.indexOf('FeaturePlot') > -1",
                    numericInput(inputId = ns("expression"),
-                                label = "FeaturePlot option: choose a maximum cutoff for expression scale",
+                                label = HTML("FeaturePlot option: <br/> set a max scale cutoff"),
                                 value = NA,
                                 min = 0) %>%
                      shinyhelper::helper(icon = "exclamation-circle",

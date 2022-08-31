@@ -1,6 +1,6 @@
 ### FeaturePlot scale
 
-A few notes on this feature:
+Choose a maximum cutoff for expression scale. A few notes on this feature:
 
 1. The scale of the FeaturePlot can only be seen under the setting `All` in `Choose all or split by group`, however the scale is the same when the dataset is split across conditions.
 
