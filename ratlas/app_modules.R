@@ -59,25 +59,56 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                     selected = c("UMAP","FeaturePlot","Violin"),
                                     inline = TRUE),
                  
-                 sliderInput(inputId = ns("width"),
-                             label = "Width (pixels) for downloading plot",
-                             value = 800,
-                             min = 400,
-                             max = 2000,
-                             step = 100,
-                             round = TRUE),
-                 
-                 sliderInput(inputId = ns("height"),
-                             label = "Height (pixels) for downloading plot",
-                             value = 800,
-                             min = 400,
-                             max = 2000,
-                             step = 100,
-                             round = TRUE),
+                 radioButtons(inputId = ns("plot_type"),
+                                    label = "Output type for downloading plot",
+                                    choices = c("png","svg"),
+                                    selected = "png",
+                                    inline = TRUE),
                  
                  hr(),
                  
-                 # conditional panels based on user choice of plots
+                 # conditional panels based on user choices
+                 
+                 conditionalPanel(
+                   condition = "input.plot_type.indexOf('png') > -1",
+                   sliderInput(inputId = ns("png_width"),
+                               label = "Width (pixels) for downloading PNG plot",
+                               value = 800,
+                               min = 400,
+                               max = 2000,
+                               step = 100,
+                               round = TRUE),
+                   
+                   sliderInput(inputId = ns("png_height"),
+                               label = "Height (pixels) for downloading PNG plot",
+                               value = 800,
+                               min = 400,
+                               max = 2000,
+                               step = 100,
+                               round = TRUE),
+                   hr(),
+                   ns = ns),
+                 
+                 conditionalPanel(
+                   condition = "input.plot_type.indexOf('svg') > -1",
+                   sliderInput(inputId = ns("svg_width"),
+                               label = "Width (inches) for downloading SVG plot",
+                               value = 8,
+                               min = 4,
+                               max = 20,
+                               step = 1,
+                               round = TRUE),
+                   
+                   sliderInput(inputId = ns("svg_height"),
+                               label = "Height (inches) for downloading SVG plot",
+                               value = 8,
+                               min = 4,
+                               max = 20,
+                               step = 1,
+                               round = TRUE),
+                   hr(),
+                   ns = ns),
+                 
                  conditionalPanel(
                    condition = "input.plots.indexOf('FeaturePlot') > -1",
                    numericInput(inputId = ns("expression"),
@@ -222,20 +253,23 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   })
   
   output$EES_FeaturePlot_downl <- downloadHandler(
-    filename = function() { "EES_FeaturePlot_Ratlas.png" },
+    filename = function() { paste0("EES_FeaturePlot_Ratlas.", input$plot_type) },
     
     content = function(file) {
-      png(file, height = input$height, width = input$width)
+      
+      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
       
       # adding footer to plot_grid requires a different process:
       
       if (input$group == "All") {
-        plot(ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+        plot_save <- ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       } else {
-        plot(ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold"))
+        plot_save <- ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold")
       }
       
-      dev.off()
+      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+
     }
   )
   #----------------------------------cluster selection outside for non-ATAC visualization -----------------------------------------
@@ -269,14 +303,17 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   })
   
   output$EES_Violin_downl <- downloadHandler(
-    filename = function() { "EES_Violin_Ratlas.png" },
+    filename = function() { paste0("EES_Violin_Ratlas.", input$plot_type) },
     
     content = function(file) {
-      png(file, height = input$height, width = input$width)
       
-      plot(ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+
+      plot_save <- ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      dev.off()
+      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      
     }
   )
   
@@ -305,14 +342,17 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   })
   
   output$FeaturePlot_downl <- downloadHandler(
-    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_FeaturePlot_Ratlas.png") },
+    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_FeaturePlot_Ratlas.", input$plot_type) },
     
     content = function(file) {
-      png(file, height = input$height, width = input$width)
       
-      plot(featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+
+      plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      dev.off()
+      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      
     }
   )
   
@@ -330,14 +370,16 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   
   
   output$Violin_downl <- downloadHandler(
-    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.png") },
+    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.", input$plot_type) },
     
     content = function(file) {
-      png(file, height = input$height, width = input$width)
       
-      plot(violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
       
-      dev.off()
+      plot_save <- violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      
+      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
     }
   )
   
@@ -357,14 +399,17 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   output$Correlation_downl <- downloadHandler(
     filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay), "_",
                                    feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay),
-                                   "_Correlation_Ratlas.png") },
+                                   "_Correlation_Ratlas.", input$plot_type) },
     
     content = function(file) {
-      png(file, height = input$height, width = input$width)
       
-      plot(corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold")))
+      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
       
-      dev.off()
+      plot_save <- corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      
+      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      
     }
   )
 }

@@ -286,3 +286,26 @@ Scatter_feature <- function(Seurat_object, split_type = "All", features = featur
                        method = "pearson"), digits = 2))
     )
 }
+
+# plot saving options
+
+plot_png_svg <- function(plot, file_name, image_format = c("png","svg"), height = 4, width = 4) {
+  # evaluate input type:
+  image_format <- match.arg(image_format)
+  
+  if (image_format == "png") {
+    png(file_name,
+        height = height,
+        width = width
+    )
+    plot(plot)
+    dev.off()
+  } else {
+    svg(file_name,
+        height = height,
+        width = width
+    )
+    plot(plot)
+    dev.off()
+  }
+}
