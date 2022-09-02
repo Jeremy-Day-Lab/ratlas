@@ -289,7 +289,7 @@ Scatter_feature <- function(Seurat_object, split_type = "All", features = featur
 
 # plot saving options
 
-plot_png_svg <- function(plot, file_name, image_format = c("png","svg"), height = 4, width = 4) {
+plot_png_pdf <- function(plot, file_name, image_format = c("png","pdf"), height = 4, width = 4) {
   # evaluate input type:
   image_format <- match.arg(image_format)
   
@@ -301,7 +301,7 @@ plot_png_svg <- function(plot, file_name, image_format = c("png","svg"), height 
     plot(plot)
     dev.off()
   } else {
-    svg(file_name,
+    pdf(file_name,
         height = height,
         width = width
     )

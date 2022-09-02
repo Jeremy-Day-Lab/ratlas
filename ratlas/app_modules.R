@@ -61,7 +61,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                  
                  radioButtons(inputId = ns("plot_type"),
                                     label = "Output type for downloading plot",
-                                    choices = c("png","svg"),
+                                    choices = c("png","pdf"),
                                     selected = "png",
                                     inline = TRUE),
                  
@@ -90,17 +90,17 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                    ns = ns),
                  
                  conditionalPanel(
-                   condition = "input.plot_type.indexOf('svg') > -1",
-                   sliderInput(inputId = ns("svg_width"),
-                               label = "Width (inches) for downloading SVG plot",
+                   condition = "input.plot_type.indexOf('pdf') > -1",
+                   sliderInput(inputId = ns("pdf_width"),
+                               label = "Width (inches) for downloading PDF plot",
                                value = 8,
                                min = 4,
                                max = 20,
                                step = 1,
                                round = TRUE),
                    
-                   sliderInput(inputId = ns("svg_height"),
-                               label = "Height (inches) for downloading SVG plot",
+                   sliderInput(inputId = ns("pdf_height"),
+                               label = "Height (inches) for downloading PDF plot",
                                value = 8,
                                min = 4,
                                max = 20,
@@ -257,8 +257,8 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     
     content = function(file) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
       
       # adding footer to plot_grid requires a different process:
       
@@ -268,7 +268,7 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
         plot_save <- ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold")
       }
       
-      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
 
     }
   )
@@ -307,12 +307,12 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     
     content = function(file) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
 
       plot_save <- ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
       
     }
   )
@@ -346,12 +346,12 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     
     content = function(file) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
 
       plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
       
     }
   )
@@ -374,12 +374,12 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     
     content = function(file) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
       
       plot_save <- violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
     }
   )
   
@@ -403,12 +403,12 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
     
     content = function(file) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$svg_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$svg_width)
+      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
       
       plot_save <- corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
       
-      plot_png_svg(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
       
     }
   )
