@@ -189,7 +189,7 @@ EES_FeaturePlot <- function(Seurat_object, split_type = "All") {
         labs(title = "", x = NULL, caption = "UMAP_1")
     }
     
-    plot_grid(plotlist = EES_UMAP_l, align = TRUE, labels = "EES")
+    plot_grid(plotlist = EES_UMAP_l, align = TRUE, labels = "EES") + theme(plot.margin = unit(c(0,0,1,0), "cm"))
     
   }
 }
@@ -285,4 +285,27 @@ Scatter_feature <- function(Seurat_object, split_type = "All", features = featur
                        fetched_scatter_data[,"gene_name2"],
                        method = "pearson"), digits = 2))
     )
+}
+
+# plot saving options
+
+plot_png_pdf <- function(plot, file_name, image_format = c("png","pdf"), height = 4, width = 4) {
+  # evaluate input type:
+  image_format <- match.arg(image_format)
+  
+  if (image_format == "png") {
+    png(file_name,
+        height = height,
+        width = width
+    )
+    plot(plot)
+    dev.off()
+  } else {
+    pdf(file_name,
+        height = height,
+        width = width
+    )
+    plot(plot)
+    dev.off()
+  }
 }
