@@ -7,8 +7,7 @@ options(spinner.type=1,spinner.color="#232a30", spinner.size=2)
 ##### group choices
 
 # adult group choices
-adult_groups <- c("All", "Stim","Sex","Stim_Sex")
-adult_groups_browser <- c("All", "CellType.Stim", "CellType.Sex")
+adult_groups <- c("All", "Stim","Sex","Stim_Sex") #TODO: rename and for MCN add in option for Dataset
 
 # choices for culture (and drd-1 subclustering if we add this)
 all_stim_groups <- c("All", "Stim")
