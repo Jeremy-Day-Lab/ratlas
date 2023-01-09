@@ -1,4 +1,4 @@
-#------------ Configuration of the data --------------------
+#-------------------------------packages------------------------------------------------------
 library(Seurat)
 library(cowplot)
 library(shiny)
@@ -8,12 +8,12 @@ library(markdown)
 library(shinyhelper)
 library(dplyr)
 
-# global non-interactive functions, info and datasets to be shared among all 
-# connections per worker/process (https://shiny.rstudio.com/articles/scoping.html)
-source("./home_description.R", local = TRUE)
-source("./helper_functions.R", local = TRUE)
-source("./app_modules.R", local = TRUE)
+#--------------------------custom functions---------------------------------------------------
 
+lapply(list.files("./R"), FUN = function(x) source(paste0("./R/", x)))
+
+#--------------------------global objects/variables-------------------------------------------
+#TODO: increase width
 main_panel_style <- "overflow-y:scroll; max-height: 1250px; max-width: 1100px; border-top: solid; border-bottom: solid; border-color: #e8e8e8"
 
 #TODO: consider renaming the first three with project num. as more datasets will be added derived from similar tissue etc.
