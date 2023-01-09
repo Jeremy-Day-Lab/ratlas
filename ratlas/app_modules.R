@@ -1,15 +1,17 @@
 # app modules
-#-----------------------------------------global UI options------------------------------------------
+#-----------------------------------------global UI options------------------------------------------------------------------
 options(spinner.type=1,spinner.color="#232a30", spinner.size=2)
 
-#-------------------------------------------UI-----------------------------------------------------
-
+#-----------------------------------------other UI variables-----------------------------------------------------------------
 ##### group choices
-
+# NOTE: may to global vars
 # adult group choices
-adult_groups <- c("All", "Stim","Sex","Stim_Sex") #TODO: rename and for MCN add in option for Dataset
+adult_acute_groups <- c("All", "Stim","Sex","Stim_Sex")
 
-# choices for culture (and drd-1 subclustering if we add this)
+# adult acute+repeated groups
+adult_acute_repeated_groups <- c("All", "Stim","Sex", "Dataset","Stim_Sex", "Dataset_Stim", "Dataset_Sex", "Dataset_Stim_Sex")
+
+# choices for culture dataset
 all_stim_groups <- c("All", "Stim")
 
 # choices for adult VTA
@@ -24,9 +26,10 @@ caption_label <- "Source: Ratlas | Day Lab"
 
 ##### plots available
 
-all_plots <- c("UMAP","FeaturePlot","Violin", "EES_FeaturePlot","EES_Violin", "Correlation_plot")
-subset_plots <- c("UMAP","FeaturePlot","Violin","Correlation_plot")
+all_plots_EES <- c("UMAP","FeaturePlot","Violin", "EES_FeaturePlot","EES_Violin", "Correlation_plot")
+all_plots <- c("UMAP","FeaturePlot","Violin","Correlation_plot")
 
+#----------------------------------------------------UI-----------------------------------------------------------------------
 sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correlation_label) {
   ns <- NS(id)
   
@@ -129,6 +132,11 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                  
                  conditionalPanel(
                    condition = "input.plots.indexOf('Violin') > -1 || input.plots.indexOf('EES_Violin') > -1",
+                   
+                   checkboxInput(inputId = ns("pt_size"), 
+                                 label = "Violin plot option: display single-nuclei as points", 
+                                 value = FALSE),
+                   
                    checkboxGroupInput(inputId = ns("cluster"),
                                       label = "Violin plot option: choose all or show specific clusters",
                                       choices = cluster_names,
@@ -293,8 +301,23 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   #-----------------------------------------------------------------------------------------------------------------------
   
   ees_violin <- reactive({
-    VlnPlot_single_dataset(Seurat_object = dataset, split_type = input$group, features = "EES", idents = update_cluster(),
-                           assay = assay)
+    
+    #evaluate violin options
+    if (input$group != "All") {
+      split_group <- input$group
+    } else {
+      split_group <- NULL
+    }
+    
+    if (input$pt_size == FALSE) {
+      size <- 0
+    } else {
+      size <- NULL # default pt.size
+    }
+    
+    VlnPlot(object = dataset, split.by = split_group,
+            features = "EES", idents = update_cluster(),
+            pt.size = size, assay = assay, log = FALSE)
   })
   
   output$EES_Violin <- renderPlot({
@@ -358,11 +381,26 @@ sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = 
   observeEvent(input$reset, {shinyjs::reset("expression")})
   
   violin <- reactive({
-    VlnPlot_single_dataset(Seurat_object = dataset, split_type = input$group, features = update_gene(), idents = update_cluster(),
-                           assay = assay)
+    
+    #evaluate violin options
+    if (input$group != "All") {
+      split_group <- input$group
+    } else {
+      split_group <- NULL
+    }
+    
+    if (input$pt_size == FALSE) {
+      size <- 0
+    } else {
+      size <- NULL # default pt.size
+    }
+    
+    VlnPlot(object = dataset, split.by = split_group,
+            features = update_gene(), idents = update_cluster(),
+            pt.size = size, assay = assay, log = FALSE)
   })
-  
-  
+    
+
   output$Violin <- renderPlot({
     violin()
   })
