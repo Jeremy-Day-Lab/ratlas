@@ -5,9 +5,9 @@ The Ratlas single-nucleus RNA-seq (snRNA-seq) datasets are currently composed of
 __1) The rat nucleus accumbens (NAc), with samples taken from four experimental groups:__
 
 * Male adult rats, 1hr following saline injection
-* Male adult rats, 1hr following cocaine injection (20mg/kg, I.P.)
-* Female adult rats, 1hr following saline injection
-* Female adult rats, 1hr following cocaine injection (20mg/kg, I.P.)
+* Male adult rats, 1hr following cocaine injection (20mg/kg, I.P.),
+* Female adult rats, 1hr following first saline injection
+* Female adult rats, 1hr following first cocaine injection (20mg/kg, I.P.)
 <br>
 <br>
 
@@ -15,8 +15,29 @@ __1) The rat nucleus accumbens (NAc), with samples taken from four experimental 
 
 <br>
 
+__2) The rat nucleus accumbens (NAc), with samples taken from two experiments and eight experimental groups:__
 
-__2) Primary striatal neurons (mixed from male and female E18 rat brains and cultured to DIV11) from four experimental groups:__
+&nbsp;&nbsp;&nbsp;&nbsp; **Acute** - Rats received a single dose of saline or cocaine
+
+* Male adult rats, 1hr following first saline injection
+* Male adult rats, 1hr following first cocaine injection (20mg/kg, I.P.)
+* Female adult rats, 1hr following first saline injection
+* Female adult rats, 1hr following first cocaine injection (20mg/kg, I.P.)
+
+&nbsp;&nbsp;&nbsp;&nbsp; **Repeated** - Rats received seven consecutive doses of saline or cocaine
+
+* Male adult rats, 1hr following seventh saline injection
+* Male adult rats, 1hr following seventh cocaine injection (20mg/kg, I.P.)
+* Female adult rats, 1hr following seventh saline injection
+* Female adult rats, 1hr following seventh cocaine injection (20mg/kg, I.P.)
+<br>
+<br>
+
+<img src="Acute_Repeated_Adult_NAc_snRNA-seq.jpg" align="center" width="850px" />
+
+<br>
+
+__3) Primary striatal neurons (mixed from male and female E18 rat brains and cultured to DIV11) from four experimental groups:__
 
 * Vehicle (media alone, 1hr)
 * Dopamine (50µM, 1hr)
@@ -29,7 +50,7 @@ __2) Primary striatal neurons (mixed from male and female E18 rat brains and cul
 
 <br>
 
-__3) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
+__4) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
 
 <br>
 
