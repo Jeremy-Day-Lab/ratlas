@@ -243,7 +243,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
 #-------------------------------------------SERVER-----------------------------------------------------
 # not all datasets have EES in metadata, thus indicated by argument EES_absent
 
-sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = "no", assay = "RNA") {
+sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = FALSE, assay = "RNA") {
   
   output$UMAP <- renderPlot({
     DimPlot(object = dataset, reduction = "umap", label = TRUE,
