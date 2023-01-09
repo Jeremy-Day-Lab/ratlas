@@ -87,50 +87,6 @@ rat_nomenclature <- function(user_gene, dataset, assay = assay) {
   }
 }
 
-# validate coordinates format for datasets
-# NOTE: check cannot be against ranges in object to provide flexibility to plot any genomic coordinate
-# not just peaks. May need to consider a check for valid coordinates against rn6 genome.
-
-validate_cords <- function(user_cords, dataset, assay = assay) {
-  
-  #change assay as needed:
-  dataset <- change_assay(dataset = dataset, assay = assay)
-  
-  # remove any empty spaces if present
-  user_cords <- gsub(" ","",user_cords, fixed = TRUE)
-  
-  # remove commas and : if present and provide warning to users
-  
-  if (length(grep(",",user_cords)) > 0) {
-    showNotification("FYI: Coordinates should not contain commas, removing them now. Format should follow: chromossome_number-start-end",
-                     type = "warning",
-                     duration = 8)
-    user_cords <- gsub(",","",user_cords, fixed = TRUE)
-  }
-
-
-  if (length(grep(":",user_cords)) > 0) {
-    showNotification("FYI: Changing : to -. Format should follow: chromossome_number-start-end",
-                     type = "warning",
-                     duration = 8)
-    user_cords <- gsub(":","-",user_cords, fixed = TRUE)
-  }
-
-  # remove chr if user adds it to coordinate (datasets use Ensembl annotation)
-  
-  if (length(grep("chr", ignore.case = TRUE,user_cords)) > 0) {
-    user_cords <- gsub("chr","", ignore.case = TRUE, user_cords)
-  }
-  
-  # ensure that the input is not empty
-  validate(
-    need(nchar(user_cords) > 0,
-         message = "You did not provide a genomic coordinate (e.g.: 18-84984575-84985121)")
-  )
-
-  return(user_cords)
-}
-
 # ensure EES is capitalized or if gene, use rat nomenclature.
 feature2_eval <- function(user_feature2, dataset, EES_absent = "no", assay = assay) {
   
@@ -191,48 +147,6 @@ EES_FeaturePlot <- function(Seurat_object, split_type = "All") {
     
     plot_grid(plotlist = EES_UMAP_l, align = TRUE, labels = "EES") + theme(plot.margin = unit(c(0,0,1,0), "cm"))
     
-  }
-}
-
-# Violin plot for split.by (to prevent needing to subset data); features should be "EES" or gene from update_gene()
-
-VlnPlot_single_dataset <- function(Seurat_object, split_type = "All", features = features, idents = idents, assay = assay) {
-  
-  #change assay as needed:
-  Seurat_object <- change_assay(dataset = Seurat_object, assay = assay)
-  
-  if (split_type == "All") {
-    VlnPlot(object = Seurat_object,
-            features = features,
-            split.by = NULL, pt.size = 0, idents = idents, log = FALSE) + NoLegend()
-  } else {
-    # here is the modified secion for when split_type is used
-    # grab the relevant data from the VlnPlot and feed it into standard geom_violin
-    vln_data <- VlnPlot(object = Seurat_object,
-                        features = features,
-                        split.by = split_type,
-                        idents = idents,
-                        log = FALSE, adjust = 1)
-    
-    vln_data <- vln_data$data
-    names(vln_data)[1] <- "gene_of_interest" # renaming first col
-    
-    ggplot(vln_data,
-           aes(x=ident,
-               y=gene_of_interest,
-               fill=split)) + 
-      geom_violin(scale = "width",
-                  adjust = 1) +
-      ggtitle(features) +
-      xlab("Identity") +
-      ylab("Expression Level") +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=14),
-            axis.text.y = element_text(size=13),
-            axis.title =  element_text(size=16),
-            axis.line = element_line(),
-            plot.title = element_text(size = 18, face = "bold"),
-            panel.background = element_blank(),
-            legend.text = element_text(size=14), legend.title = element_text(size=15))
   }
 }
 
