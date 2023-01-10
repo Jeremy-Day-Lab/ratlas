@@ -14,8 +14,7 @@ library(bslib)
 lapply(list.files("./R"), FUN = function(x) source(paste0("./R/", x)))
 
 #--------------------------global objects/variables-------------------------------------------
-#TODO: increase width
-main_panel_style <- "overflow-y:scroll; max-height: 1250px; max-width: 1100px; border-top: solid; border-bottom: solid; border-color: #e8e8e8"
+main_panel_style <- "overflow-y:scroll; max-height: 1800px; border-top: solid; border-bottom: solid; border-color: #e8e8e8"
 
 #TODO: consider renaming the first three with project num. as more datasets will be added derived from similar tissue etc.
 All_Groups_log_rn6_rn7 <- readRDS(file = "./lean_datasets/All_Groups_log_rn7.rds")

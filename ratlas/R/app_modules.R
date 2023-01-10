@@ -35,6 +35,12 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
   
   sidebarLayout(
     sidebarPanel(width = 3,
+                 checkboxGroupInput(inputId = ns("plots"),
+                                    label = "Choose which plot(s) to display",
+                                    choices = plot_choices,
+                                    selected = c("UMAP","FeaturePlot","Violin"),
+                                    inline = TRUE),
+                 
                  textInput(inputId = ns("gene"),
                            label = "Choose a gene",
                            placeholder = "Gad1") %>%
@@ -54,12 +60,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                              choices = group_choices,
                              selected = "All",
                              multiple = FALSE),
-                 
-                 checkboxGroupInput(inputId = ns("plots"),
-                                    label = "Choose which plot(s) to display",
-                                    choices = plot_choices,
-                                    selected = c("UMAP","FeaturePlot","Violin"),
-                                    inline = TRUE),
+
                  
                  radioButtons(inputId = ns("plot_type"),
                                     label = "Output type for downloading plot",
@@ -77,7 +78,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                label = "Width (pixels) for downloading PNG plot",
                                value = 800,
                                min = 400,
-                               max = 2000,
+                               max = 3000,
                                step = 100,
                                round = TRUE),
                    
@@ -85,7 +86,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                label = "Height (pixels) for downloading PNG plot",
                                value = 800,
                                min = 400,
-                               max = 2000,
+                               max = 3000,
                                step = 100,
                                round = TRUE),
                    hr(),
@@ -97,7 +98,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                label = "Width (inches) for downloading PDF plot",
                                value = 8,
                                min = 4,
-                               max = 20,
+                               max = 30,
                                step = 1,
                                round = TRUE),
                    
@@ -105,7 +106,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                                label = "Height (inches) for downloading PDF plot",
                                value = 8,
                                min = 4,
-                               max = 20,
+                               max = 30,
                                step = 1,
                                round = TRUE),
                    hr(),
