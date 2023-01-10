@@ -46,8 +46,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                  
                  actionButton(inputId = ns("go"),
                               label = "Update gene!",
-                              icon("dna"),
-                              style="color: #ededed; background-color: #232a30"),
+                              icon("dna")
+                              ),
                  
                  selectInput(inputId = ns("group"),
                              label = "Choose all or split by group",
@@ -125,8 +125,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                    
                    actionButton(inputId = ns("reset"),
                                 label = "Reset scale",
-                                icon("redo"),
-                                style="color: #ededed; background-color: #232a30"),
+                                icon("redo")
+                                ),
                    hr(),
                    ns = ns),
                  
@@ -144,8 +144,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                    
                    actionButton(inputId = ns("cluster_selection"),
                                 label = "Plot selected clusters",
-                                icon("check"),
-                                style="color: #ededed; background-color: #232a30") %>%
+                                icon("check")
+                                ) %>%
                      shinyhelper::helper(icon = "info-circle",
                                          colour ="#232a30",
                                          type = "markdown",
@@ -154,13 +154,13 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                    
                    actionButton(inputId = ns("reset_clusters"),
                                 label = "Clear all cluster choices",
-                                icon("redo"),
-                                style="color: #ededed; background-color: #232a30"),
+                                icon("redo")
+                                ),
                    
                    actionButton(inputId = ns("select_all_clusters"),
                                 label = "Check all cluster choices",
-                                icon("check-double"),
-                                style="color: #ededed; background-color: #232a30"),
+                                icon("check-double")
+                                ),
                    
                    hr(),
                    ns = ns),
@@ -184,8 +184,8 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                    
                    actionButton(inputId = ns("go_corr"),
                                 label = "Update correlation feature",
-                                icon("chart-line"),
-                                style="color: #ededed; background-color: #232a30"),
+                                icon("chart-line")
+                                ),
                    ns = ns),
     ),
     # downloadButton have their own conditional dependent upon output as well (for genes, not EES)

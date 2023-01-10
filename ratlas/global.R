@@ -7,6 +7,7 @@ library(ggplot2)
 library(markdown)
 library(shinyhelper)
 library(dplyr)
+library(bslib)
 
 #--------------------------custom functions---------------------------------------------------
 

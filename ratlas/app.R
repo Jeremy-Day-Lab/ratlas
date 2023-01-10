@@ -9,13 +9,13 @@ ui <- function(){
   bootstrapPage("",
                 useShinyjs(),
                 navbarPage(title = "Ratlas",
-                           inverse = TRUE,
+                           theme = bslib::bs_theme(version = 5, bootswatch = "cosmo", primary = "#232a30"),
                            home_description,
                            tabPanel(title = "Adult acute NAc",
                                     tabsetPanel(type = "tabs",
                                                 tabPanel(title = "Adult NAc - rn6",          
                                                          sh_layout_UI(id = "adult",
-                                                                      group_choices = adult_acute_groups, #TODO: rename this
+                                                                      group_choices = adult_acute_groups,
                                                                       plot_choices = all_plots_EES,
                                                                       cluster_names = cluster_names_adult,
                                                                       correlation_label = contains_EES
@@ -84,11 +84,20 @@ ui <- function(){
                                     )
                            )
                 ),
+                tags$style(HTML(".irs--shiny .irs-bar {
+                                background: #232a30;
+                                border-top: 1px solid #232a30;
+                                border-bottom: 1px solid #232a30;
+                                }
+                                .irs--shiny .irs-to, .irs--shiny .irs-from {
+                                background-color: #232a30;
+                                }
+                                .irs--shiny .irs-single {
+                                background: #232a30;
+                                }")),
                 tags$head(
                   tags$style(HTML(".shiny-output-error-validation {
-                color: black;
-                                }")))
-  )
+                                  color: black;}"))))
 }
 
 # Reminder: objects inside server function are instantiated per session...
