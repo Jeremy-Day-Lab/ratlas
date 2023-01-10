@@ -243,210 +243,216 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
 #-------------------------------------------SERVER-----------------------------------------------------
 # not all datasets have EES in metadata, thus indicated by argument EES_absent
 
-sh_layout <- function(input, output, session, dataset, UMAP_label, EES_absent = FALSE, assay = "RNA") {
+sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay = "RNA") {
   
-  output$UMAP <- renderPlot({
-    DimPlot(object = dataset, reduction = "umap", label = TRUE,
-            label.size = 5) + NoLegend() + ggtitle(label = UMAP_label)
-  })
-  
-  # make plots in reactive code repetition when saving figs
-  ees_featureplot <- reactive({
-    EES_FeaturePlot(Seurat_object = dataset, split_type = input$group)
-  })
-  
-  output$EES_FeaturePlot <- renderPlot({
-    ees_featureplot()
-  })
-  
-  output$EES_FeaturePlot_downl <- downloadHandler(
-    filename = function() { paste0("EES_FeaturePlot_Ratlas.", input$plot_type) },
-    
-    content = function(file) {
+  moduleServer(
+    id,
+    function(input, output, session) {
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+      output$UMAP <- renderPlot({
+        DimPlot(object = dataset, reduction = "umap", label = TRUE,
+                label.size = 5) + NoLegend() + ggtitle(label = UMAP_label)
+      })
       
-      # adding footer to plot_grid requires a different process:
+      # make plots in reactive code repetition when saving figs
+      ees_featureplot <- reactive({
+        EES_FeaturePlot(Seurat_object = dataset, split_type = input$group)
+      })
       
-      if (input$group == "All") {
-        plot_save <- ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
-      } else {
-        plot_save <- ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold")
-      }
+      output$EES_FeaturePlot <- renderPlot({
+        ees_featureplot()
+      })
       
-      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
-
-    }
-  )
-  #----------------------------------cluster selection outside for non-ATAC visualization -----------------------------------------
-  
-  # #NOTE ignoreNULL = F to ensure that when there is no selection at launch, the user only needs to click on Update gene
-  update_cluster <- eventReactive(input$cluster_selection, {input$cluster},
-                                  ignoreNULL = FALSE)
-  
-  # option to clear or select all checkboxes from clusters
-  
-  observeEvent(input$reset_clusters, {
-    updateCheckboxGroupInput(session, "cluster",
-                             choices = sort(as.character(unique(dataset@meta.data$CellType))),
-                             selected = NULL)
-  })
-  
-  observeEvent(input$select_all_clusters, {
-    updateCheckboxGroupInput(session, "cluster",
-                             choices = sort(as.character(unique(dataset@meta.data$CellType))),
-                             selected = sort(as.character(unique(dataset@meta.data$CellType))))
-  })
-  #-----------------------------------------------------------------------------------------------------------------------
-  
-  ees_violin <- reactive({
-    
-    #evaluate violin options
-    if (input$group != "All") {
-      split_group <- input$group
-    } else {
-      split_group <- NULL
-    }
-    
-    if (input$pt_size == FALSE) {
-      size <- 0
-    } else {
-      size <- NULL # default pt.size
-    }
-    
-    VlnPlot(object = dataset, split.by = split_group,
-            features = "EES", idents = update_cluster(),
-            pt.size = size, assay = assay, log = FALSE)
-  })
-  
-  output$EES_Violin <- renderPlot({
-    ees_violin()
-  })
-  
-  output$EES_Violin_downl <- downloadHandler(
-    filename = function() { paste0("EES_Violin_Ratlas.", input$plot_type) },
-    
-    content = function(file) {
+      output$EES_FeaturePlot_downl <- downloadHandler(
+        filename = function() { paste0("EES_FeaturePlot_Ratlas.", input$plot_type) },
+        
+        content = function(file) {
+          
+          height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+          width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+          
+          # adding footer to plot_grid requires a different process:
+          
+          if (input$group == "All") {
+            plot_save <- ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          } else {
+            plot_save <- ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold")
+          }
+          
+          plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+          
+        }
+      )
+      #----------------------------------cluster selection outside for non-ATAC visualization -----------------------------------------
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
-
-      plot_save <- ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      # #NOTE ignoreNULL = F to ensure that when there is no selection at launch, the user only needs to click on Update gene
+      update_cluster <- eventReactive(input$cluster_selection, {input$cluster},
+                                      ignoreNULL = FALSE)
       
-      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      # option to clear or select all checkboxes from clusters
       
-    }
-  )
-  
-  update_gene <- eventReactive(input$go, {rat_nomenclature(input$gene,dataset,assay)})
-  
-  featureplot <- reactive({
-    #change assay as needed for input:
-    
-    if (input$group == "All") {
-      FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
-                  cols = c("lightgrey", "#0072B2"),
-                  features = update_gene(),
-                  max.cutoff = input$expression,
-                  split.by = NULL)
-    } else {
-      FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
-                  cols = c("lightgrey", "#0072B2"),
-                  features = update_gene(),
-                  max.cutoff = input$expression,
-                  split.by = input$group)
-    }
-  })
-  
-  output$FeaturePlot <- renderPlot({
-    featureplot()
-  })
-  
-  output$FeaturePlot_downl <- downloadHandler(
-    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_FeaturePlot_Ratlas.", input$plot_type) },
-    
-    content = function(file) {
+      observeEvent(input$reset_clusters, {
+        updateCheckboxGroupInput(session, "cluster",
+                                 choices = sort(as.character(unique(dataset@meta.data$CellType))),
+                                 selected = NULL)
+      })
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
-
-      plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      observeEvent(input$select_all_clusters, {
+        updateCheckboxGroupInput(session, "cluster",
+                                 choices = sort(as.character(unique(dataset@meta.data$CellType))),
+                                 selected = sort(as.character(unique(dataset@meta.data$CellType))))
+      })
+      #-----------------------------------------------------------------------------------------------------------------------
       
-      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      ees_violin <- reactive({
+        
+        #evaluate violin options
+        if (input$group != "All") {
+          split_group <- input$group
+        } else {
+          split_group <- NULL
+        }
+        
+        if (input$pt_size == FALSE) {
+          size <- 0
+        } else {
+          size <- NULL # default pt.size
+        }
+        
+        VlnPlot(object = dataset, split.by = split_group,
+                features = "EES", idents = update_cluster(),
+                pt.size = size, assay = assay, log = FALSE)
+      })
       
-    }
-  )
-  
-  observeEvent(input$reset, {shinyjs::reset("expression")})
-  
-  violin <- reactive({
-    
-    #evaluate violin options
-    if (input$group != "All") {
-      split_group <- input$group
-    } else {
-      split_group <- NULL
-    }
-    
-    if (input$pt_size == FALSE) {
-      size <- 0
-    } else {
-      size <- NULL # default pt.size
-    }
-    
-    VlnPlot(object = dataset, split.by = split_group,
-            features = update_gene(), idents = update_cluster(),
-            pt.size = size, assay = assay, log = FALSE)
-  })
-    
-
-  output$Violin <- renderPlot({
-    violin()
-  })
-  
-  
-  output$Violin_downl <- downloadHandler(
-    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.", input$plot_type) },
-    
-    content = function(file) {
+      output$EES_Violin <- renderPlot({
+        ees_violin()
+      })
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+      output$EES_Violin_downl <- downloadHandler(
+        filename = function() { paste0("EES_Violin_Ratlas.", input$plot_type) },
+        
+        content = function(file) {
+          
+          height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+          width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+          
+          plot_save <- ees_violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          
+          plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+          
+        }
+      )
       
-      plot_save <- violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      update_gene <- eventReactive(input$go, {rat_nomenclature(input$gene,dataset,assay)})
       
-      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
-    }
-  )
-  
-  
-  update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
-  
-  corr_plot <- reactive({
-    Scatter_feature(Seurat_object = dataset, split_type = input$group, 
-                    features = update_gene(), features2 = update_feature_corr(), idents = input$cluster_corr,
-                    assay = assay)
-  })
-  
-  output$Correlation_plot <- renderPlot({
-    corr_plot()
-  })
-  
-  output$Correlation_downl <- downloadHandler(
-    filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay), "_",
-                                   feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay),
-                                   "_Correlation_Ratlas.", input$plot_type) },
-    
-    content = function(file) {
+      featureplot <- reactive({
+        #change assay as needed for input:
+        
+        if (input$group == "All") {
+          FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
+                      cols = c("lightgrey", "#0072B2"),
+                      features = update_gene(),
+                      max.cutoff = input$expression,
+                      split.by = NULL)
+        } else {
+          FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
+                      cols = c("lightgrey", "#0072B2"),
+                      features = update_gene(),
+                      max.cutoff = input$expression,
+                      split.by = input$group)
+        }
+      })
       
-      height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
-      width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+      output$FeaturePlot <- renderPlot({
+        featureplot()
+      })
       
-      plot_save <- corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+      output$FeaturePlot_downl <- downloadHandler(
+        filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_FeaturePlot_Ratlas.", input$plot_type) },
+        
+        content = function(file) {
+          
+          height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+          width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+          
+          plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          
+          plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+          
+        }
+      )
       
-      plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+      observeEvent(input$reset, {shinyjs::reset("expression")})
       
+      violin <- reactive({
+        
+        #evaluate violin options
+        if (input$group != "All") {
+          split_group <- input$group
+        } else {
+          split_group <- NULL
+        }
+        
+        if (input$pt_size == FALSE) {
+          size <- 0
+        } else {
+          size <- NULL # default pt.size
+        }
+        
+        VlnPlot(object = dataset, split.by = split_group,
+                features = update_gene(), idents = update_cluster(),
+                pt.size = size, assay = assay, log = FALSE)
+      })
+      
+      
+      output$Violin <- renderPlot({
+        violin()
+      })
+      
+      
+      output$Violin_downl <- downloadHandler(
+        filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay),"_Violin_Ratlas.", input$plot_type) },
+        
+        content = function(file) {
+          
+          height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+          width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+          
+          plot_save <- violin() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          
+          plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+        }
+      )
+      
+      
+      update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
+      
+      corr_plot <- reactive({
+        Scatter_feature(Seurat_object = dataset, split_type = input$group, 
+                        features = update_gene(), features2 = update_feature_corr(), idents = input$cluster_corr,
+                        assay = assay)
+      })
+      
+      output$Correlation_plot <- renderPlot({
+        corr_plot()
+      })
+      
+      output$Correlation_downl <- downloadHandler(
+        filename = function() { paste0(rat_nomenclature(input$gene,dataset,assay), "_",
+                                       feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay),
+                                       "_Correlation_Ratlas.", input$plot_type) },
+        
+        content = function(file) {
+          
+          height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
+          width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
+          
+          plot_save <- corr_plot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          
+          plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
+          
+        }
+      )
     }
   )
 }

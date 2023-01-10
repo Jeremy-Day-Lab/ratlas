@@ -105,41 +105,41 @@ server <- function(input, output) {
   
   shinyhelper::observe_helpers(help_dir = "helpfiles", withMathJax = FALSE)
   
-  callModule(sh_layout, id = "adult", 
-             dataset = All_Groups_log_rn6_rn7, 
-             UMAP_label = "The Rat acute NAc dataset - rn6")
+  sh_layout_server(id = "adult", 
+                   dataset = All_Groups_log_rn6_rn7, 
+                   UMAP_label = "The Rat acute NAc dataset - rn6")
   
-  callModule(sh_layout, id = "adult_rn7", 
-             dataset = All_Groups_log_rn6_rn7, 
-             UMAP_label = "The Rat acute NAc dataset - rn7",
-             assay = "RNArn7")
+  sh_layout_server(id = "adult_rn7", 
+                   dataset = All_Groups_log_rn6_rn7, 
+                   UMAP_label = "The Rat acute NAc dataset - rn7",
+                   assay = "RNArn7")
   
-  callModule(sh_layout, id = "adult_mcn", 
-             dataset = MCN_dataset, 
-             UMAP_label = "The Rat acute and repeated NAc dataset - rn7",
-             EES_absent = TRUE)
+  sh_layout_server(id = "adult_mcn", 
+                   dataset = MCN_dataset, 
+                   UMAP_label = "The Rat acute and repeated NAc dataset - rn7",
+                   EES_absent = TRUE)
   
-  callModule(sh_layout, id = "culture", 
-             dataset = Culture_log_rn6_rn7, 
-             UMAP_label = "Primary striatal neuron culture - rn6",
-             EES_absent = TRUE)
+  sh_layout_server(id = "culture", 
+                   dataset = Culture_log_rn6_rn7, 
+                   UMAP_label = "Primary striatal neuron culture - rn6",
+                   EES_absent = TRUE)
   
-  callModule(sh_layout, id = "culture_rn7", 
-             dataset = Culture_log_rn6_rn7, 
-             UMAP_label = "Primary striatal neuron culture - rn7",
-             EES_absent = TRUE,
-             assay = "RNArn7")
+  sh_layout_server(id = "culture_rn7", 
+                   dataset = Culture_log_rn6_rn7, 
+                   UMAP_label = "Primary striatal neuron culture - rn7",
+                   EES_absent = TRUE,
+                   assay = "RNArn7")
   
-  callModule(sh_layout, id = "vta", 
-             dataset = VTA_dataset_rn6_rn7, 
-             UMAP_label = "The Rat VTA dataset - rn6",
-             EES_absent = TRUE)
+  sh_layout_server(id = "vta", 
+                   dataset = VTA_dataset_rn6_rn7, 
+                   UMAP_label = "The Rat VTA dataset - rn6",
+                   EES_absent = TRUE)
   
-  callModule(sh_layout, id = "vta_rn7", 
-             dataset = VTA_dataset_rn6_rn7, 
-             UMAP_label = "The Rat VTA dataset - rn7",
-             EES_absent = TRUE,
-             assay = "RNArn7")
+  sh_layout_server(id = "vta_rn7", 
+                   dataset = VTA_dataset_rn6_rn7, 
+                   UMAP_label = "The Rat VTA dataset - rn7",
+                   EES_absent = TRUE,
+                   assay = "RNArn7")
 }
 
 shinyApp(ui = ui, server = server)
