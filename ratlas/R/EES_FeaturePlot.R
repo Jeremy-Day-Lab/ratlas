@@ -1,6 +1,6 @@
 #' EES_FeaturePlot
 #' A wrapper function of `Seurat::FeaturePlot` which addresses needs when combine == FALSE: 
-#' 1. applies consistant scale limits on split.by plots
+#' 1. applies consistent scale limits on split.by plots
 #' 2. fixes an issue with the x-axis labels
 #' Also applies custom colors to EES FeaturePlots
 #' @param Seurat_object A Seurat object

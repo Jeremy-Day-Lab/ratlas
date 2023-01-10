@@ -2,8 +2,8 @@
 #' Generates a scatter plot of correlation between two features from a Seurat object
 #' @param Seurat_object A Seurat object
 #' @param split_type Factor to split the groups by. Default is show all / do not split.
-#' @param features First feature from 2 features to draw correlation from
-#' @param features2 Second feature from 2 features to draw correlation from
+#' @param feature First feature from 2 features to draw correlation from
+#' @param feature2 Second feature from 2 features to draw correlation from
 #' @param idents Which cell type / ident to draw the correlation from
 #' @param assay Assay within the Seurat object to search gene/features
 #'
@@ -13,23 +13,23 @@
 #' @examples
 #' \dontrun{
 #' Scatter_feature(Seurat_object = input_obj, split_type = "All", 
-#' features = "Gad1", features2 = "Gad2", idents = "Drd1-MSN", assay = "RNA")
+#' feature = "Gad1", feature2 = "Gad2", idents = "Drd1-MSN", assay = "RNA")
 #' }
-Scatter_feature <- function(Seurat_object, split_type = "All", features = features, features2 = features2, idents = idents, assay = assay) {
+Scatter_feature <- function(Seurat_object, split_type = "All", feature = feature, feature2 = feature2, idents = idents, assay = assay) {
   
   #change assay as needed:
   Seurat_object <- change_assay(dataset = Seurat_object, assay = assay)
   
   if (split_type == "All") {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c("CellType",features,features2),
+                                                   vars = c("CellType",feature,feature2),
                                                    slot = "data"),
                                          CellType == idents)
     aes_mapping_colour <- NULL
     
   } else {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c("CellType",features,features2, split_type),
+                                                   vars = c("CellType",feature,feature2, split_type),
                                                    slot = "data"),
                                          CellType == idents)
     
@@ -54,8 +54,8 @@ Scatter_feature <- function(Seurat_object, split_type = "All", features = featur
           legend.text = element_text(size=14),
           legend.title = element_text(size=15),
           legend.key = element_blank()) +
-    xlab(features) +
-    ylab(features2) +
+    xlab(feature) +
+    ylab(feature2) +
     ggtitle(
       paste0("Celltype: ", idents, " \nPearson Correlation: ",
              round(cor(fetched_scatter_data[,"gene_name1"],
