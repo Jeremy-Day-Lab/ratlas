@@ -5,7 +5,7 @@
 #' @param feature First feature from 2 features to draw correlation from
 #' @param feature2 Second feature from 2 features to draw correlation from
 #' @param idents Which cell type / ident to draw the correlation from
-#' @param assay Assay within the Seurat object to search gene/features
+#' @param assay Assay within the Seurat object to search gene/features. Defaults to "RNA"
 #'
 #' @return
 #' @export
@@ -15,7 +15,7 @@
 #' Scatter_feature(Seurat_object = input_obj, split_type = "All", 
 #' feature = "Gad1", feature2 = "Gad2", idents = "Drd1-MSN", assay = "RNA")
 #' }
-Scatter_feature <- function(Seurat_object, split_type = "All", feature = feature, feature2 = feature2, idents = idents, assay = assay) {
+Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2, idents, assay = "RNA") {
   
   #change assay as needed:
   Seurat_object <- change_assay(dataset = Seurat_object, assay = assay)

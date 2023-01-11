@@ -4,7 +4,7 @@
 #' typing feature name inside double quotes to search for features which do not yet follow standard nomenclature. 
 #' @param user_gene Gene/Feature name
 #' @param dataset A Seurat object
-#' @param assay Assay within the Seurat object to search gene/features
+#' @param assay Assay within the Seurat object to search gene/features. Defaults to "RNA"
 #'
 #' @return
 #' @export
@@ -16,7 +16,7 @@
 #' \dontrun{
 #' rat_nomenclature(user_gene = '"ENSRNOG00000020272"', dataset = input_obj, assay = 'RNA') #does not convert to lowercase
 #' }
-rat_nomenclature <- function(user_gene, dataset, assay = assay) {
+rat_nomenclature <- function(user_gene, dataset, assay = "RNA") {
   # first ensure the correct assay is selected under each mode
   
   dataset <- change_assay(dataset = dataset, assay = assay)

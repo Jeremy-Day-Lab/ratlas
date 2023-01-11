@@ -3,7 +3,7 @@
 #' @param user_feature2 Gene/Feature name
 #' @param dataset A Seurat object
 #' @param EES_absent indicates if dataset contains EES
-#' @param assay Assay within the Seurat object to search gene/features
+#' @param assay Assay within the Seurat object to search gene/features. Defaults to "RNA"
 #'
 #' @return
 #' @export
@@ -12,7 +12,7 @@
 #' \dontrun{
 #' feature2_eval(user_feature2 = "Gad1", dataset = input_obj, EES_absent = FALSE, assay = "RNA")
 #' }
-feature2_eval <- function(user_feature2, dataset, EES_absent = FALSE, assay = assay) {
+feature2_eval <- function(user_feature2, dataset, EES_absent = FALSE, assay = "RNA") {
   
   if (EES_absent == TRUE) {
     err_empty_message <- "You did not type a second gene name for correlation. Note: EES not available for current selected dataset"
