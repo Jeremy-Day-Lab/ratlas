@@ -199,7 +199,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                 ns = ns),
               conditionalPanel(
                 condition = "input.plots.indexOf('EES_FeaturePlot') > -1",
-                plotOutput(ns("EES_FeaturePlot")) %>% 
+                plotOutput(ns("EES_FeaturePlot"), height = "500px") %>% 
                   shinycssloaders::withSpinner(),
                 downloadButton(ns("EES_FeaturePlot_downl"), label = "Download EES FeaturePlot"),
                 ns = ns),
@@ -211,7 +211,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
                 ns = ns),
               conditionalPanel(
                 condition = "input.plots.indexOf('FeaturePlot') > -1",
-                plotOutput(ns("FeaturePlot")) %>% 
+                plotOutput(ns("FeaturePlot"), height = "500px") %>% 
                   shinycssloaders::withSpinner(),
                 ns = ns),
               conditionalPanel(
@@ -341,21 +341,13 @@ sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay 
       update_gene <- eventReactive(input$go, {rat_nomenclature(input$gene,dataset,assay)})
       
       featureplot <- reactive({
-        #change assay as needed for input:
         
-        if (input$group == "All") {
-          FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
-                      cols = c("lightgrey", "#0072B2"),
-                      features = update_gene(),
-                      max.cutoff = input$expression,
-                      split.by = NULL)
-        } else {
-          FeaturePlot(object = change_assay(dataset = dataset, assay = assay),
-                      cols = c("lightgrey", "#0072B2"),
-                      features = update_gene(),
-                      max.cutoff = input$expression,
-                      split.by = input$group)
-        }
+        Gene_FeaturePlot(Seurat_object = dataset,
+                         split_type = input$group,
+                         feature = update_gene(),
+                         assay = assay,
+                         max.cutoff = input$expression)
+        
       })
       
       output$FeaturePlot <- renderPlot({
@@ -370,7 +362,7 @@ sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay 
           height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
           width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
           
-          plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
+          plot_save <- featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold", hjust = 0.95, vjust = 1.5))
           
           plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
           
