@@ -272,13 +272,7 @@ sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay 
           height <- ifelse(input$plot_type == "png", input$png_height, input$pdf_height)
           width <- ifelse(input$plot_type == "png", input$png_width, input$pdf_width)
           
-          # adding footer to plot_grid requires a different process:
-          
-          if (input$group == "All") {
-            plot_save <- ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold"))
-          } else {
-            plot_save <- ees_featureplot() + draw_label(caption_label, x = 1, y = 0, hjust = 1.5, vjust = 1, size = 18, fontface = "bold")
-          }
+          plot_save <- ees_featureplot() + labs(caption = caption_label) + theme(plot.caption = element_text(size=18, face="bold", hjust = 0.95, vjust = 1.5))
           
           plot_png_pdf(file_name = file, plot = plot_save, height = height, width = width, image_format = input$plot_type)
           

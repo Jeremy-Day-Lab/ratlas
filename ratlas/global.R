@@ -1,6 +1,5 @@
 #-------------------------------packages------------------------------------------------------
 library(Seurat)
-library(cowplot)
 library(shiny)
 library(shinyjs)
 library(ggplot2)
