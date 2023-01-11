@@ -27,17 +27,20 @@ EES_FeaturePlot <- function(Seurat_object, split_type = "All") {
     # applies themes as Seurat removes x-axis labels from first plot when combine=F;
     # also applies limits to scale color for each plot as min/max.cutoff fails when combine=F
     EES_UMAP_l <- list()
-    for (n in 1:length(EES_ggplot_list)) {
-      EES_UMAP_l[[n]] <- EES_ggplot_list[[n]] +
-        scale_color_gradientn(colours = c("gray90", "gray80", "red"),
-                              limits=c(round(min(Seurat_object@meta.data$EES), digits = 1),
-                                       round(max(Seurat_object@meta.data$EES), digits = 1))) +
-        theme(axis.text.x = element_text(size=13), axis.ticks.x = element_line(),
-              axis.line.x = element_line(), panel.border = element_blank(),
-              axis.title.y.right = element_text(size = 16),
-              plot.caption = element_text(size = 16, hjust = 0.5)) +
-        labs(title = "", x = NULL, caption = "UMAP_1")
-    }
+    suppressMessages(
+      for (n in 1:length(EES_ggplot_list)) {
+        EES_UMAP_l[[n]] <- EES_ggplot_list[[n]] +
+          scale_color_gradientn(colours = c("gray90", "gray80", "red"),
+                                limits=c(round(min(Seurat_object@meta.data$EES), digits = 1),
+                                         round(max(Seurat_object@meta.data$EES), digits = 1)),
+                                oob = scales::squish) +
+          theme(axis.text.x = element_text(size=13), axis.ticks.x = element_line(),
+                axis.line.x = element_line(), panel.border = element_blank(),
+                axis.title.y.right = element_text(size = 16),
+                plot.caption = element_text(size = 16, hjust = 0.5)) +
+          labs(title = "", x = NULL, caption = "UMAP_1")
+      }
+    )
     
     ggpubr::ggarrange(plotlist = EES_UMAP_l, labels = "EES")
     
