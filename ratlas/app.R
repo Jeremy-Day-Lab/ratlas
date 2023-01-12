@@ -31,7 +31,7 @@ ui <- function(){
                                                 )
                                     )
                            ),
-                           tabPanel(title = "Adult acute and repeated NAc", #TODO: double check name
+                           tabPanel(title = "Adult acute and repeated NAc",
                                     tabsetPanel(type = "tabs",
                                                 tabPanel(title = "Adult acute and repeated NAc - rn7", # keeping tabs for consistency for now
                                                          sh_layout_UI(id = "adult_mcn",
