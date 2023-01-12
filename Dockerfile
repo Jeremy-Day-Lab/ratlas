@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages('plotly')"
 RUN R -e "install.packages('markdown')"
 RUN R -e "install.packages('shinyjs')"
-RUN R -e "install.packages('cowplot')"
+RUN R -e "install.packages('ggpubr')"
 RUN R -e "install.packages('Seurat')"
 RUN R -e "install.packages('shinyhelper')"
 RUN R -e "install.packages('shinycssloaders')"

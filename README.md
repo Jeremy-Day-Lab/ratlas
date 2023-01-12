@@ -8,7 +8,7 @@ For this to work constructively:
 
 1) `git clone` this repository to your local computer and feel free to make changes to the repository. If you would like to contribute to this repository please follow the following git flow: https://levelup.gitconnected.com/semantic-versioning-with-git-flow-and-the-marvelous-way-to-go-there-b9f97b90455c?gi=3901bb647b71 ; for more information on this please contact a member from U-BDS. In short, the `main` branch is the stable version of the app, and new features should be committed to the `development` branch (ideally by first creating `feature_*` branch from `development` first). Once the newly developed feature is fully tested it may be merged to `main`. U-BDS provides a detailed guide on this protocol (request access if needed).
 
-2) Make sure you have the datasets needed by the app. Download them from https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg (if you need access, ask Lara), and place them in the `lean_datasets` folder from this repository.
+2) Make sure you have the datasets needed by the app. Download them from https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg (if you need access, ask Lara), and place them in the `lean_datasets` folder from this repository. __You do not need to download the `other_files` sub-directory (these are just files which are present for solidarity or development needs)__.
 
 ## Current state:
 
@@ -25,7 +25,7 @@ In the meantime, you can launch a containarized version of the app by downloadin
 * Run the container with the following command (again where `pwd` should be path upstream of the ratlas directory where app code is located. Thus, be sure to go to this cloned repository):
 
 ```bash
-docker run -d --rm --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:0.3.0
+docker run -d --rm --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:latest
 ```
 
 Open your browser, and go to local `localhost:3838`
@@ -42,5 +42,5 @@ docker stop <container_id>
 Above directions also apply to launching the app in cloud.rc but note the use of the `--restart always` flag instead of `--rm` due to automatic server reboots:
 
 ```bash
-sudo docker run -d --restart always --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:0.3.0
+sudo docker run -d --restart always --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:latest
 ```
