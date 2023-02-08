@@ -1,42 +1,7 @@
 # A Daylab RShiny application of single-nuclei datasets
 # Author: Lara Ianov | U-BDS
-#------------ Configuration of the data --------------------
-library(Seurat)
-library(cowplot)
-library(shiny)
-library(shinyjs)
-library(ggplot2)
-library(markdown)
-library(shinyhelper)
-library(dplyr)
 
-# global non-interactive functions, info and datasets to be shared among all 
-# connections per worker/process (https://shiny.rstudio.com/articles/scoping.html)
-source("./home_description.R", local = TRUE)
-source("./helper_functions.R", local = TRUE)
-source("./app_modules.R", local = TRUE)
-
-main_panel_style <- "overflow-y:scroll; max-height: 1250px; max-width: 1100px; border-top: solid; border-bottom: solid; border-color: #e8e8e8"
-
-#TODO: consider renaming the first three with project num. as more datasets will be added derived from similar tissue etc.
-All_Groups_log_rn6_rn7 <- readRDS(file = "./lean_datasets/All_Groups_log_rn7.rds")
-Culture_log_rn6_rn7 <- readRDS(file = "./lean_datasets/Culture_log_rn7.rds")
-VTA_dataset_rn6_rn7 <- readRDS(file = "./lean_datasets/VTA_dataset_rn7.rds")
-
-#--------------------------- ADULT Seurat object ordering ----------------------
-# ordering ident for violin
-cluster_names_adult <- sort(as.character(unique(All_Groups_log_rn6_rn7@meta.data$CellType)))
-Idents(object = All_Groups_log_rn6_rn7) <- factor(Idents(All_Groups_log_rn6_rn7),levels = cluster_names_adult)
-
-#--------------------------- CULTURE Seurat object ordering ----------------------
-# ordering ident for violin
-cluster_names_cult <- sort(as.character(unique(Culture_log_rn6_rn7@meta.data$CellType)))
-Idents(object = Culture_log_rn6_rn7) <- factor(Idents(Culture_log_rn6_rn7), levels = cluster_names_cult)
-
-#--------------------------- VTA adult Seurat object ordering ----------------------
-# ordering ident for violin
-cluster_names_VTA <- sort(as.character(unique(VTA_dataset_rn6_rn7@meta.data$CellType)))
-Idents(object = VTA_dataset_rn6_rn7) <- factor(Idents(VTA_dataset_rn6_rn7),levels = cluster_names_VTA)
+source("./global.R")
 
 #----------------------- app -------------------------------
 ui <- function(){
@@ -44,24 +9,36 @@ ui <- function(){
   bootstrapPage("",
                 useShinyjs(),
                 navbarPage(title = "Ratlas",
-                           inverse = TRUE,
+                           theme = bslib::bs_theme(version = 5, bootswatch = "cosmo", primary = "#232a30"),
                            home_description,
-                           tabPanel(title = "Adult NAc",
+                           tabPanel(title = "Adult acute NAc",
                                     tabsetPanel(type = "tabs",
                                                 tabPanel(title = "Adult NAc - rn6",          
                                                          sh_layout_UI(id = "adult",
-                                                                      group_choices = adult_groups,
-                                                                      plot_choices = all_plots,
+                                                                      group_choices = adult_acute_groups,
+                                                                      plot_choices = all_plots_EES,
                                                                       cluster_names = cluster_names_adult,
                                                                       correlation_label = contains_EES
                                                          )
                                                 ),
                                                 tabPanel(title = "Adult NAc - rn7",
                                                          sh_layout_UI(id = "adult_rn7",
-                                                                      group_choices = adult_groups,
-                                                                      plot_choices = all_plots,
+                                                                      group_choices = adult_acute_groups,
+                                                                      plot_choices = all_plots_EES,
                                                                       cluster_names = cluster_names_adult,
                                                                       correlation_label = contains_EES
+                                                         )
+                                                )
+                                    )
+                           ),
+                           tabPanel(title = "Adult acute and repeated NAc",
+                                    tabsetPanel(type = "tabs",
+                                                tabPanel(title = "Adult acute and repeated NAc - rn7", # keeping tabs for consistency for now
+                                                         sh_layout_UI(id = "adult_mcn",
+                                                                      group_choices = adult_acute_repeated_groups,
+                                                                      plot_choices = all_plots,
+                                                                      cluster_names = cluster_names_MCN,
+                                                                      correlation_label = no_EES
                                                          )
                                                 )
                                     )
@@ -71,7 +48,7 @@ ui <- function(){
                                                 tabPanel(title = "Primary striatal culture - rn6",
                                                          sh_layout_UI(id = "culture",
                                                                       group_choices = all_stim_groups,
-                                                                      plot_choices = subset_plots,
+                                                                      plot_choices = all_plots,
                                                                       cluster_names = cluster_names_cult,
                                                                       correlation_label = no_EES
                                                          )
@@ -79,7 +56,7 @@ ui <- function(){
                                                 tabPanel(title = "Primary striatal culture - rn7",
                                                          sh_layout_UI(id = "culture_rn7",
                                                                       group_choices = all_stim_groups,
-                                                                      plot_choices = subset_plots,
+                                                                      plot_choices = all_plots,
                                                                       cluster_names = cluster_names_cult,
                                                                       correlation_label = no_EES
                                                          )
@@ -91,7 +68,7 @@ ui <- function(){
                                                 tabPanel(title = "Adult VTA - rn6",
                                                          sh_layout_UI(id = "vta",
                                                                       group_choices = all_VTA_groups,
-                                                                      plot_choices = subset_plots,
+                                                                      plot_choices = all_plots,
                                                                       cluster_names = cluster_names_VTA,
                                                                       correlation_label = no_EES
                                                          )
@@ -99,7 +76,7 @@ ui <- function(){
                                                 tabPanel(title = "Adult VTA - rn7",
                                                          sh_layout_UI(id = "vta_rn7",
                                                                       group_choices = all_VTA_groups,
-                                                                      plot_choices = subset_plots,
+                                                                      plot_choices = all_plots,
                                                                       cluster_names = cluster_names_VTA,
                                                                       correlation_label = no_EES
                                                          )
@@ -107,11 +84,20 @@ ui <- function(){
                                     )
                            )
                 ),
+                tags$style(HTML(".irs--shiny .irs-bar {
+                                background: #232a30;
+                                border-top: 1px solid #232a30;
+                                border-bottom: 1px solid #232a30;
+                                }
+                                .irs--shiny .irs-to, .irs--shiny .irs-from {
+                                background-color: #232a30;
+                                }
+                                .irs--shiny .irs-single {
+                                background: #232a30;
+                                }")),
                 tags$head(
                   tags$style(HTML(".shiny-output-error-validation {
-                color: black;
-                                }")))
-  )
+                                  color: black;}"))))
 }
 
 # Reminder: objects inside server function are instantiated per session...
@@ -119,36 +105,41 @@ server <- function(input, output) {
   
   shinyhelper::observe_helpers(help_dir = "helpfiles", withMathJax = FALSE)
   
-  callModule(sh_layout, id = "adult", 
-             dataset = All_Groups_log_rn6_rn7, 
-             UMAP_label = "The Rat rn6 NAc")
+  sh_layout_server(id = "adult", 
+                   dataset = All_Groups_log_rn6_rn7, 
+                   UMAP_label = "The Rat acute NAc dataset - rn6")
   
-  callModule(sh_layout, id = "adult_rn7", 
-             dataset = All_Groups_log_rn6_rn7, 
-             UMAP_label = "The Rat rn7 NAc",
-             assay = "RNArn7")
+  sh_layout_server(id = "adult_rn7", 
+                   dataset = All_Groups_log_rn6_rn7, 
+                   UMAP_label = "The Rat acute NAc dataset - rn7",
+                   assay = "RNArn7")
   
-  callModule(sh_layout, id = "culture", 
-             dataset = Culture_log_rn6_rn7, 
-             UMAP_label = "Primary striatal neuron culture - rn6",
-             EES_absent = "yes")
+  sh_layout_server(id = "adult_mcn", 
+                   dataset = MCN_dataset, 
+                   UMAP_label = "The Rat acute and repeated NAc dataset - rn7",
+                   EES_absent = TRUE)
   
-  callModule(sh_layout, id = "culture_rn7", 
-             dataset = Culture_log_rn6_rn7, 
-             UMAP_label = "Primary striatal neuron culture - rn7",
-             EES_absent = "yes",
-             assay = "RNArn7")
+  sh_layout_server(id = "culture", 
+                   dataset = Culture_log_rn6_rn7, 
+                   UMAP_label = "Primary striatal neuron culture - rn6",
+                   EES_absent = TRUE)
   
-  callModule(sh_layout, id = "vta", 
-             dataset = VTA_dataset_rn6_rn7, 
-             UMAP_label = "The Rat VTA",
-             EES_absent = "yes")
+  sh_layout_server(id = "culture_rn7", 
+                   dataset = Culture_log_rn6_rn7, 
+                   UMAP_label = "Primary striatal neuron culture - rn7",
+                   EES_absent = TRUE,
+                   assay = "RNArn7")
   
-  callModule(sh_layout, id = "vta_rn7", 
-             dataset = VTA_dataset_rn6_rn7, 
-             UMAP_label = "The Rat VTA",
-             EES_absent = "yes",
-             assay = "RNArn7")
+  sh_layout_server(id = "vta", 
+                   dataset = VTA_dataset_rn6_rn7, 
+                   UMAP_label = "The Rat VTA dataset - rn6",
+                   EES_absent = TRUE)
+  
+  sh_layout_server(id = "vta_rn7", 
+                   dataset = VTA_dataset_rn6_rn7, 
+                   UMAP_label = "The Rat VTA dataset - rn7",
+                   EES_absent = TRUE,
+                   assay = "RNArn7")
 }
 
 shinyApp(ui = ui, server = server)

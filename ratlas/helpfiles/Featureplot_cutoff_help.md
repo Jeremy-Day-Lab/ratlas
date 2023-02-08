@@ -1,4 +1,5 @@
 ### FeaturePlot scale
+___
 
 Choose a maximum cutoff for expression scale. A few notes on this feature:
 

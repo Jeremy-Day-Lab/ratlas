@@ -1,4 +1,4 @@
-FROM rocker/shiny-verse:4.1.0
+FROM rocker/shiny-verse:4.2.2
 
 LABEL maintainer="Lara Ianov <lianov@uab.edu>"
 LABEL description="Dockerized Ratlas app dependencies from the Day lab - UAB"
@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
     git \
     libfftw3-dev \
     libgsl-dev \
-    llvm-10 \
     libbz2-dev \
     liblzma-dev \
     g++ \
@@ -31,27 +30,16 @@ RUN apt-get update && apt-get install -y \
     libglpk-dev \
     software-properties-common && add-apt-repository -y ppa:git-core/ppa
 
-# BioC packages
-
-RUN R --no-restore --no-save -e "BiocManager::install(c('S4Vectors', 'SummarizedExperiment', \
-'SingleCellExperiment', 'BiocGenerics', 'GenomicRanges', 'IRanges', 'rtracklayer', \
-'Biobase', 'GenomeInfoDbData'))"
-
-# additional suggestions (CRAN) + some of our previouslly needed packages
-
-RUN R --no-restore --no-save -e "install.packages(c('VGAM', 'R.utils', 'Rfast2','hdf5r', 'remotes'))"
-
 # main targets
 RUN R -e "install.packages('plotly')"
 RUN R -e "install.packages('markdown')"
 RUN R -e "install.packages('shinyjs')"
-RUN R -e "install.packages('cowplot')"
+RUN R -e "install.packages('ggpubr')"
 RUN R -e "install.packages('Seurat')"
-RUN R -e "remotes::install_github('mojaveazure/seurat-disk')"
 RUN R -e "install.packages('shinyhelper')"
 RUN R -e "install.packages('shinycssloaders')"
 RUN R -e "install.packages('dplyr')"
-RUN R -e "setRepositories(ind=1:2); install.packages('Signac',  repos = c('https://cloud.r-project.org', 'https://bioconductor.org/packages/3.13/bioc'),dependencies = TRUE)"
+RUN R -e "install.packages('bslib')"
 
 # port container listens to (default R Shiny port)
 EXPOSE 3838

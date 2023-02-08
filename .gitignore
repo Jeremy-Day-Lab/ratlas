@@ -7,3 +7,4 @@
 .local
 shiny_app_logs/*.log
 ratlas/*.Rprofvis
+ratlas/app_cache
