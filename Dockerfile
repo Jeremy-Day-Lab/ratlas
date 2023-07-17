@@ -1,4 +1,4 @@
-FROM rocker/shiny-verse:4.2.2
+FROM rocker/shiny-verse:4.3.1
 
 LABEL maintainer="Lara Ianov <lianov@uab.edu>"
 LABEL description="Dockerized Ratlas app dependencies from the Day lab - UAB"
@@ -35,11 +35,14 @@ RUN R -e "install.packages('plotly')"
 RUN R -e "install.packages('markdown')"
 RUN R -e "install.packages('shinyjs')"
 RUN R -e "install.packages('ggpubr')"
-RUN R -e "install.packages('Seurat')"
 RUN R -e "install.packages('shinyhelper')"
 RUN R -e "install.packages('shinycssloaders')"
 RUN R -e "install.packages('dplyr')"
 RUN R -e "install.packages('bslib')"
+RUN R -e "remotes::install_github('bnprks/BPCells')"
+
+# Seurat V5 (beta for now)
+RUN R -e "remotes::install_github('satijalab/seurat', 'seurat5')"
 
 # port container listens to (default R Shiny port)
 EXPOSE 3838
