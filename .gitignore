@@ -5,6 +5,8 @@
 .RData
 .bash_history
 .local
+.config
 shiny_app_logs/*.log
 ratlas/*.Rprofvis
 ratlas/app_cache
+ratlas/.cache
