@@ -36,14 +36,10 @@ Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2
     aes_mapping_colour <- split_type
   }
   
-  # due to gene names that may start with numbers, for simplicity rename cols
-  
-  names(fetched_scatter_data)[2] <- "gene_name1" #x-axis
-  names(fetched_scatter_data)[3] <- "gene_name2" #y-axis
-  
+  # scatter plot with correlation value
   scatter_plot <- ggplot(fetched_scatter_data,
-                         aes(x=gene_name1,
-                             y=gene_name2)) +
+                         aes(x=.data[[feature]],
+                             y=.data[[feature2]])) +
     geom_point(size = 1, alpha = 0.7, stroke = 1) +
     theme(axis.text.x = element_text(size=14),
           axis.text.y = element_text(size=14),
@@ -54,12 +50,10 @@ Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2
           legend.text = element_text(size=14),
           legend.title = element_text(size=15),
           legend.key = element_blank()) +
-    xlab(feature) +
-    ylab(feature2) +
     ggtitle(
       paste0("Celltype: ", idents, " \nPearson Correlation: ",
-             round(cor(fetched_scatter_data[,"gene_name1"],
-                       fetched_scatter_data[,"gene_name2"],
+             round(cor(fetched_scatter_data[,feature],
+                       fetched_scatter_data[,feature2],
                        method = "pearson"), digits = 2))
     )
   
