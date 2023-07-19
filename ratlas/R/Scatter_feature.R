@@ -23,28 +23,24 @@ Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2
   if (split_type == "All") {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
                                                    vars = c("CellType",feature,feature2),
-                                                   slot = "data"),
+                                                   layer = "data"), 
                                          CellType == idents)
     aes_mapping_colour <- NULL
     
   } else {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
                                                    vars = c("CellType",feature,feature2, split_type),
-                                                   slot = "data"),
+                                                   layer = "data"),
                                          CellType == idents)
     
     aes_mapping_colour <- split_type
   }
   
-  # due to gene names that may start with numbers (issue #2), for simplicity rename cols
-  
-  names(fetched_scatter_data)[2] <- "gene_name1" #x-axis
-  names(fetched_scatter_data)[3] <- "gene_name2" #y-axis
-  
-  ggplot(fetched_scatter_data,
-         aes(x=gene_name1,
-             y=gene_name2)) +
-    geom_point(size = 1, alpha = 0.7,  aes_string(colour=aes_mapping_colour), stroke = 1) +
+  # scatter plot with correlation value
+  scatter_plot <- ggplot(fetched_scatter_data,
+                         aes(x=.data[[feature]],
+                             y=.data[[feature2]])) +
+    geom_point(size = 1, alpha = 0.7, stroke = 1) +
     theme(axis.text.x = element_text(size=14),
           axis.text.y = element_text(size=14),
           axis.title =  element_text(size=16),
@@ -54,12 +50,14 @@ Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2
           legend.text = element_text(size=14),
           legend.title = element_text(size=15),
           legend.key = element_blank()) +
-    xlab(feature) +
-    ylab(feature2) +
     ggtitle(
       paste0("Celltype: ", idents, " \nPearson Correlation: ",
-             round(cor(fetched_scatter_data[,"gene_name1"],
-                       fetched_scatter_data[,"gene_name2"],
+             round(cor(fetched_scatter_data[,feature],
+                       fetched_scatter_data[,feature2],
                        method = "pearson"), digits = 2))
     )
+  
+  if (!is.null(aes_mapping_colour)) scatter_plot <- scatter_plot + aes(colour = .data[[aes_mapping_colour]])
+  
+  return(scatter_plot)
 }

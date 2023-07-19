@@ -9,10 +9,10 @@ __1) The rat nucleus accumbens (NAc), with samples taken from four experimental 
 * Female adult rats, 1hr following first saline injection
 * Female adult rats, 1hr following first cocaine injection (20mg/kg, I.P.)
 <br>
-<br>
 
 <img src="Adult_NAc_snRNA-seq.jpg" align="center" width="850px" />
 
+<br>
 <br>
 
 __2) The rat nucleus accumbens (NAc), with samples taken from two experiments and eight experimental groups:__
@@ -31,10 +31,10 @@ __2) The rat nucleus accumbens (NAc), with samples taken from two experiments an
 * Female adult rats, 1hr following seventh saline injection
 * Female adult rats, 1hr following seventh cocaine injection (20mg/kg, I.P.)
 <br>
-<br>
 
 <img src="Acute_Repeated_Adult_NAc_snRNA-seq.jpg" align="center" width="850px" />
 
+<br>
 <br>
 
 __3) Primary striatal neurons (mixed from male and female E18 rat brains and cultured to DIV11) from four experimental groups:__
@@ -44,10 +44,10 @@ __3) Primary striatal neurons (mixed from male and female E18 rat brains and cul
 * SKF-38393 (1µM, 1hr)
 * Potassium chloride (25mM, 1hr)
 <br>
-<br>
 
 <img src="Primary_culture_snRNA-seq.jpg" align="center" width="850px" />
 
+<br>
 <br>
 
 __4) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
@@ -65,7 +65,7 @@ Savell, K.E.\*, Tuscher, J.J.\*, Zipperly, M.E\*, Duke, C.G.\*, Phillips III, R.
 
 Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D., Ianov, L., & Day, J.J. (Cell Reports, April, 2022). [_An atlas of transcriptionally defined cell populations in the rat ventral tegmental area._](https://www.cell.com/cell-reports/fulltext/S2211-1247%2822%2900364-3)  DOI: <https://doi.org/10.1016/j.celrep.2022.110616>
 
-Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Preprint, January, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://www.biorxiv.org/content/10.1101/2023.01.12.523845v1.)  DOI: <https://doi.org/10.1101/2023.01.12.523845>
+Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Molecular and Cellular Neuroscience, June, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://doi.org/10.1016/j.mcn.2023.103849)  DOI: <https://doi.org/10.1016/j.mcn.2023.103849>
 
 ### Links:
 
@@ -87,4 +87,4 @@ All Day lab resources may be found at the [Day Lab website](http://day-lab.org/r
 
 ### About the app:
 
-This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. For questions about the app, please send an to lianov@uab.edu
+This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. For questions about the app, please send an email to lianov@uab.edu

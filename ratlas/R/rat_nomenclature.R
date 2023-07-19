@@ -36,7 +36,7 @@ rat_nomenclature <- function(user_gene, dataset, assay = "RNA") {
   # I use '"' but can also use "\"", with quote escaped ...
   if ((substr(user_gene,1,1) == '"' & substr(user_gene,nchar(user_gene),nchar(user_gene)) == '"')) {
     
-    # if user used quotes, we then now need to remove it to search it within the object as is
+    # if user used quotes, we then need to remove it to search it within the object as is
     
     user_gene <- gsub("\"","",user_gene, fixed = TRUE)
     
@@ -45,7 +45,7 @@ rat_nomenclature <- function(user_gene, dataset, assay = "RNA") {
       if (DefaultAssay(dataset) == "RNA") {
         
         validate(
-          need(user_gene %in% rownames(dataset@assays$RNA@data),
+          need(user_gene %in% rownames(dataset@assays$RNA$data),
                message = paste0("The gene name ", user_gene, " was not found in the dataset"))
         )
         
@@ -54,7 +54,7 @@ rat_nomenclature <- function(user_gene, dataset, assay = "RNA") {
       } else if (DefaultAssay(dataset) == "RNArn7") {
         
         validate(
-          need(user_gene %in% rownames(dataset@assays$RNArn7@data),
+          need(user_gene %in% rownames(dataset@assays$RNArn7$data),
                message = paste0("The gene name ", user_gene, " was not found in the dataset"))
         )
         
@@ -80,7 +80,7 @@ rat_nomenclature <- function(user_gene, dataset, assay = "RNA") {
     if ("RNA" %in% Assays(dataset)) {
       
       validate(
-        need(user_gene %in% rownames(dataset@assays$RNA@data),
+        need(user_gene %in% rownames(dataset@assays$RNA$data),
              message = paste0("The gene name ", user_gene, " was not found in the dataset"))
       )
       

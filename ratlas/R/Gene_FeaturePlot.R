@@ -29,7 +29,7 @@ Gene_FeaturePlot <- function(Seurat_object, feature, split_type = "All", assay =
     split_group <- NULL
   }
   
-  # any data that has more than 4 group in selected variable gets plotted
+  # any data that has more than 4 groups in selected variable gets plotted
   # as a separate # for easier visibility within the app (mainly width)
   # If less than 4 or All, default to standard FeaturePlot
   if (split_type == "All" | length_of_split <= 4) {
