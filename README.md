@@ -1,38 +1,35 @@
-# Ratlas app
+# Ratlas
 
-## Data location (for development purposes)
+`Ratlas` is an R Shiny web application which hosts the Day lab published single-nuclei datasets. **You may use the `Ratlas` app by visiting the following URL: <https://day-lab.shinyapps.io/ratlas/>.** All information regarding the currently hosted datasets can be found at the app's homepage.
 
-This section is written for the app developer(s) or contributors. **General users are encouraged to access the web app by the public instance / URL: <https://day-lab.shinyapps.io/ratlas/>**
+## FAQs:
 
-**The Ratlas datasets** The data can be downloaded from the following link <https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg>. Only the lab and any developers have access to this folder. The folder has a `README` with relevant information about the data versioning.
+<details> 
 
-## Running the app with Docker
+<summary> 1. Why can't I find my gene? </summary>
 
-A Docker container has also been developed for this app which will eventually be launched in our own cloud.rc rather than shinyapps.io.
+Users of the app should be aware of the feature to search by gene IDs for cases when a gene name is not assigned during the generation of the cell matrices (gene ids are typically associated with more novel genes in the rat assembly. You will normally find either a gene name or ID, not both). Please see the "Gene name search" help icon at the upper right corner of the `Choose a gene` option for more information including reference genome source and versions. We add special emphasis on this section since the addition of the rn7 mapping.
+</details> 
 
-In the meantime, for development, you can launch a containarized version of the app by downloading the image which contains the shiny/app dependencies from Docker Hub: 
+<details> 
+<summary> 2. What is the difference between `rn6` and `rn7` tabs?  </summary>
 
-* `git clone` this app repository and `cd` to it from your computer
+The difference between `rn6` vs `rn7` in the first three datasets published in Ratlas (adult acute NAc, primary striatal neurons and VTA) is the Rat assembly. The rat `rn6` assembly was implemented in the original published data across these three datasets, and later, we have re-mapped the data and updated the objects to contain the updated rat `rn7` assembly. [This Twitter thread, written by Dr. Jeremy Day](https://twitter.com/DayLabUAB/status/1542635405542957058), nicely summarizes some of the key differences we have found between the assemblies.
 
-* Run the container with the following command (again where `pwd` should be path upstream of the ratlas directory where app code is located. Thus, be sure to go to this cloned repository):
+Notably, newer datasets published since then (adult acute and repeated NAc), have only been mapped with the newer rn7 assembly.
 
-```bash
-docker run -d --rm --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:latest
-```
+</details> 
 
-Open your browser, and go to local `localhost:3838`
+## Credit to data sources
 
-Once finished don't forget to stop the container with
+The data to the following publication are hosted in `Ratlas`:
 
-```
-docker ps # find docker container id
-docker stop <container_id>
-```
+Savell, K.E.\*, Tuscher, J.J.\*, Zipperly, M.E\*, Duke, C.G.\*, Phillips III, R.A.\*, Bauman, A.J., Thukral, S., Sultan, F.A., Goska, N.A, Ianov, L. & Day, J.J. (Science Advances, June, 2020). [_A dopamine-induced gene expression signature regulates neuronal function and cocaine response_](https://advances.sciencemag.org/content/6/26/eaba4221)  DOI: 10.1126/sciadv.aba4221
 
-## Running the app with Docker in cloud.rc
+Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D., Ianov, L., & Day, J.J. (Cell Reports, April, 2022). [_An atlas of transcriptionally defined cell populations in the rat ventral tegmental area._](https://www.cell.com/cell-reports/fulltext/S2211-1247%2822%2900364-3)  DOI: <https://doi.org/10.1016/j.celrep.2022.110616>
 
-Above directions also apply to launching the app in cloud.rc for testing purposes. Note the use of the `--restart always` flag instead of `--rm` due to automatic server reboots:
+Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Molecular and Cellular Neuroscience, June, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://doi.org/10.1016/j.mcn.2023.103849)  DOI: <https://doi.org/10.1016/j.mcn.2023.103849>
 
-```bash
-sudo docker run -d --restart always --user shiny -p 3838:3838 -v `pwd`/ratlas:/srv/shiny-server/ -v `pwd`/shiny_app_logs:/var/log/shiny-server uabbds/ratlas:latest
-```
+## Citation to Ratlas
+
+If this application benefits your work, we kindly ask to acknowledge the app by including the following DOI: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10957420.svg)](https://doi.org/10.5281/zenodo.10957420)
