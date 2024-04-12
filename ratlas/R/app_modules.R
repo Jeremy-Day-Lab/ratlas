@@ -63,10 +63,15 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
 
                  
                  radioButtons(inputId = ns("plot_type"),
-                                    label = "Output type for downloading plot",
-                                    choices = c("png","pdf"),
-                                    selected = "png",
-                                    inline = TRUE),
+                              label = "Output type for downloading plot",
+                              choices = c("png","pdf"),
+                              selected = "png",
+                              inline = TRUE) %>%
+                   shinyhelper::helper(icon = "exclamation-circle",
+                                       colour ="#232a30",
+                                       type = "markdown",
+                                       content = "Citation"
+                   ),
                  
                  hr(),
                  

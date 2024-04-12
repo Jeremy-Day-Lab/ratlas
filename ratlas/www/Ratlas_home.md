@@ -79,16 +79,23 @@ All Day lab resources may be found at the [Day Lab website](http://day-lab.org/r
 
 ### FAQs:
 
-1. Why can't I find my gene?
+<details> 
 
-	Users of the app should be aware of the feature to search by gene IDs for cases when a gene name is not assigned during the generation of the cell matrices (gene ids are typically associated with more novel genes in the rat assembly. You will normally find either a gene name or ID, not both). Please see the "Gene name search" help icon at the upper right corner of the `Choose a gene` option for more information including reference genome source and versions. We add special emphasis on this section since the addition of the rn7 mapping.
-	
-2. What is the difference between `rn6` and `rn7` tabs?
+<summary> 1. Why can't I find my gene? </summary>
 
-	The difference between `rn6` vs `rn7` in the first three datasets published in Ratlas (adult acute NAc, primary striatal neurons and VTA) is the Rat assembly. The rat `rn6` assembly was implemented in the original published data across these three datasets, and later, we have re-mapped the data and updated the objects to contain the updated rat `rn7` assembly. [This Twitter thread, written by Dr. Jeremy Day](https://twitter.com/DayLabUAB/status/1542635405542957058), nicely summarizes some of the key differences we have found between the assemblies.
-	
-	Notably, newer datasets published since then (adult acute and repeated NAc), have only been mapped with the newer rn7 assembly.
+Users of the app should be aware of the feature to search by gene IDs for cases when a gene name is not assigned during the generation of the cell matrices (gene ids are typically associated with more novel genes in the rat assembly. You will normally find either a gene name or ID, not both). Please see the "Gene name search" help icon at the upper right corner of the `Choose a gene` option for more information including reference genome source and versions. We add special emphasis on this section since the addition of the rn7 mapping.
+</details> 
 
+<details> 
+<summary> 2. What is the difference between "rn6" and "rn7" tabs?  </summary>
+
+The difference between `rn6` vs `rn7` in the first three datasets published in Ratlas (adult acute NAc, primary striatal neurons and VTA) is the Rat assembly. The rat `rn6` assembly was implemented in the original published data across these three datasets, and later, we have re-mapped the data and updated the objects to contain the updated rat `rn7` assembly. [This Twitter thread, written by Dr. Jeremy Day](https://twitter.com/DayLabUAB/status/1542635405542957058), nicely summarizes some of the key differences we have found between the assemblies.
+
+Notably, newer datasets published since then (adult acute and repeated NAc), have only been mapped with the newer rn7 assembly.
+
+</details> 
+
+___
 ### About the app:
 
 This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. If you have questions or issues with the app, please open an issue in the GitHub repository of this app [located here](https://github.com/Jeremy-Day-Lab/ratlas).
