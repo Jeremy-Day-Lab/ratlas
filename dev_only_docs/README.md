@@ -2,7 +2,7 @@
 
 ## Data location (for development purposes)
 
-This section is written for the app developer(s) or contributors. **General users are encouraged to access the web app by the public instance / URL: <https://day-lab.shinyapps.io/ratlas/>**
+This section is written for the app developer(s) or contributors. **General users are encouraged to access the web app by the public instance / URL: <https://ratlas.org/>**
 
 **The Ratlas datasets** The on-disk data can be downloaded from the following link <https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg>. Only the lab and any developers have access to this folder. The folder has a `README` with relevant information about the data versioning.
 
