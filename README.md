@@ -1,6 +1,6 @@
 # Ratlas
 
-`Ratlas` is an R Shiny web application which hosts the Day lab published single-nuclei datasets. **You may use the `Ratlas` app by visiting the following URL: <https://day-lab.shinyapps.io/ratlas/>.** All information regarding the currently hosted datasets can be found at the app's homepage.
+`Ratlas` is a R Shiny web application which hosts the Day lab published single-nuclei datasets. **You may use the `Ratlas` app by visiting the following URL: <https://ratlas.org/>.** All information regarding the currently hosted datasets can be found at the app's homepage.
 
 ## FAQs:
 
