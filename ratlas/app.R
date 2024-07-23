@@ -110,7 +110,7 @@ server <- function(input, output) {
     if ((input$dataset_tabs_adult == "adult_rn6_tab" || input$dataset_tabs_adult == "adult_rn7_tab") && is.null(All_Groups_log_rn6_rn7)) {
       All_Groups_log_rn6_rn7 <<- readRDS(file = All_Groups_log_rn6_rn7_path)
       
-      Idents(object = All_Groups_log_rn6_rn7) <- factor(Idents(All_Groups_log_rn6_rn7), levels = cluster_names_adult)
+      Idents(object = All_Groups_log_rn6_rn7) <<- factor(Idents(All_Groups_log_rn6_rn7), levels = cluster_names_adult)
     }
     
     if (input$dataset_tabs_adult == "adult_rn6_tab") {
@@ -133,7 +133,7 @@ server <- function(input, output) {
     if ((input$dataset_tabs_mcn == "adult_mcn_tab" ) && is.null(MCN_dataset)) {
       MCN_dataset <<- readRDS(file = MCN_dataset_path)
       
-      Idents(object = MCN_dataset) <- factor(Idents(MCN_dataset), levels = cluster_names_MCN)
+      Idents(object = MCN_dataset) <<- factor(Idents(MCN_dataset), levels = cluster_names_MCN)
     }
     
     sh_layout_server(id = "adult_mcn",
@@ -147,7 +147,7 @@ server <- function(input, output) {
     if ((input$dataset_tabs_culture == "culture_rn6_tab" || input$dataset_tabs_culture == "culture_rn7_tab") && is.null(Culture_log_rn6_rn7)) {
       Culture_log_rn6_rn7 <<- readRDS(file = Culture_log_rn6_rn7_path)
       
-      Idents(object = Culture_log_rn6_rn7) <- factor(Idents(Culture_log_rn6_rn7), levels = cluster_names_cult)
+      Idents(object = Culture_log_rn6_rn7) <<- factor(Idents(Culture_log_rn6_rn7), levels = cluster_names_cult)
     }
     
     if (input$dataset_tabs_culture == "culture_rn6_tab") {
@@ -157,7 +157,7 @@ server <- function(input, output) {
                        EES_absent = TRUE)
     }
     
-    if (input$dataset_tabs_culture == "adult_rn7_tab") {
+    if (input$dataset_tabs_culture == "culture_rn7_tab") {
       sh_layout_server(id = "culture_rn7",
                        dataset = Culture_log_rn6_rn7,
                        UMAP_label = "Primary striatal neuron culture - rn7",
@@ -172,7 +172,7 @@ server <- function(input, output) {
     if ((input$dataset_tabs_VTA == "vta_rn6_tab" || input$dataset_tabs_VTA == "vta_rn7_tab") && is.null(VTA_dataset_rn6_rn7)) {
       VTA_dataset_rn6_rn7 <<- readRDS(file = VTA_dataset_rn6_rn7_path)
       
-      Idents(object = VTA_dataset_rn6_rn7) <- factor(Idents(VTA_dataset_rn6_rn7), levels = cluster_names_VTA)
+      Idents(object = VTA_dataset_rn6_rn7) <<- factor(Idents(VTA_dataset_rn6_rn7), levels = cluster_names_VTA)
     }
     
     if (input$dataset_tabs_VTA == "vta_rn6_tab") {
