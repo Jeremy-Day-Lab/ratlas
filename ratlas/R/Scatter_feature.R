@@ -12,26 +12,26 @@
 #'
 #' @examples
 #' \dontrun{
-#' Scatter_feature(Seurat_object = input_obj, split_type = "All", 
+#' Scatter_feature(Seurat_object = input_obj, split_type = "All", cell_names = "CellType",
 #' feature = "Gad1", feature2 = "Gad2", idents = "Drd1-MSN", assay = "RNA")
 #' }
-Scatter_feature <- function(Seurat_object, split_type = "All", feature, feature2, idents, assay = "RNA") {
+Scatter_feature <- function(Seurat_object, split_type = "All", cell_names, feature, feature2, idents, assay = "RNA") {
   
   #change assay as needed:
   Seurat_object <- change_assay(dataset = Seurat_object, assay = assay)
   
   if (split_type == "All") {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c("CellType",feature,feature2),
+                                                   vars = c(cell_names,feature,feature2),
                                                    layer = "data"), 
-                                         CellType == idents)
+                                         cell_names == idents)
     aes_mapping_colour <- NULL
     
   } else {
     fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c("CellType",feature,feature2, split_type),
+                                                   vars = c(cell_names,feature,feature2, split_type),
                                                    layer = "data"),
-                                         CellType == idents)
+                                         cell_names == idents)
     
     aes_mapping_colour <- split_type
   }

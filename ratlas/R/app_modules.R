@@ -9,13 +9,18 @@ options(spinner.type=1,spinner.color="#232a30", spinner.size=2)
 adult_acute_groups <- c("All", "Stim","Sex","Stim_Sex")
 
 # adult acute+repeated groups
-adult_acute_repeated_groups <- c("All", "Stim","Sex", "Dataset","Stim_Sex", "Dataset_Stim", "Dataset_Sex", "Dataset_Stim_Sex")
+adult_acute_repeated_groups <- c("All", "Stim","Sex", "Dataset","Stim_Sex",
+                                 "Dataset_Stim", "Dataset_Sex", "Dataset_Stim_Sex")
 
 # choices for culture dataset
 all_stim_groups <- c("All", "Stim")
 
 # choices for adult VTA
 all_VTA_groups <- c("All", "Sex")
+
+# choices for adult VTA Pain
+all_VTA_pain_groups <- c("All", "Sex", "Veh_CFA", "Sal_Mor", "Veh_CFA_Sal_Mor",
+                         "Veh_CFA_Sex", "Sal_Mor_Sex", "Veh_CFA_Sal_Mor_Sex")
 
 # correlation plot UI message based EES data being present
 contains_EES <- "Type a gene or EES to correlate to gene name typed above"
@@ -249,7 +254,7 @@ sh_layout_UI <- function(id, group_choices, plot_choices, cluster_names, correla
 #-------------------------------------------SERVER-----------------------------------------------------
 # not all datasets have EES in metadata, thus indicated by argument EES_absent
 
-sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay = "RNA") {
+sh_layout_server <- function(id, dataset, UMAP_label, cluster_names, EES_absent = FALSE, assay = "RNA") {
   
   moduleServer(
     id,
@@ -293,14 +298,14 @@ sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay 
       
       observeEvent(input$reset_clusters, {
         updateCheckboxGroupInput(session, "cluster",
-                                 choices = sort(as.character(unique(dataset@meta.data$CellType))),
+                                 choices = cluster_names,
                                  selected = NULL)
       })
       
       observeEvent(input$select_all_clusters, {
         updateCheckboxGroupInput(session, "cluster",
-                                 choices = sort(as.character(unique(dataset@meta.data$CellType))),
-                                 selected = sort(as.character(unique(dataset@meta.data$CellType))))
+                                 choices = cluster_names,
+                                 selected = cluster_names)
       })
       #-----------------------------------------------------------------------------------------------------------------------
       
@@ -420,7 +425,7 @@ sh_layout_server <- function(id, dataset, UMAP_label, EES_absent = FALSE, assay 
       update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
       
       corr_plot <- reactive({
-        Scatter_feature(Seurat_object = dataset, split_type = input$group, 
+        Scatter_feature(Seurat_object = dataset, split_type = input$group, cell_names = cluster_names,
                         feature = update_gene(), feature2 = update_feature_corr(), idents = input$cluster_corr,
                         assay = assay)
       })

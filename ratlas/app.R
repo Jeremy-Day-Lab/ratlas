@@ -82,6 +82,18 @@ ui <- function(){
                                                          )
                                                 )
                                     )
+                           ),
+                           tabPanel(title = "VTA Pain",
+                                    tabsetPanel(id = "dataset_tabs_VTA_pain", type = "tabs",
+                                                tabPanel(title = "VTA pain - rn7", value = "vta_pain_tab",
+                                                         sh_layout_UI(id = "vta_pain",
+                                                                      group_choices = all_VTA_pain_groups,
+                                                                      plot_choices = all_plots,
+                                                                      cluster_names = cluster_names_VTA_pain,
+                                                                      correlation_label = no_EES
+                                                         )
+                                                )
+                                    )
                            )
                 ),
                 tags$style(HTML(".irs--shiny .irs-bar {
@@ -116,13 +128,15 @@ server <- function(input, output) {
     if (input$dataset_tabs_adult == "adult_rn6_tab") {
       sh_layout_server(id = "adult", 
                        dataset = All_Groups_log_rn6_rn7, 
-                       UMAP_label = "The Rat acute NAc dataset - rn6")
+                       UMAP_label = "The Rat acute NAc dataset - rn6",
+                       cluster_names = cluster_names_adult)
     }
     
     if (input$dataset_tabs_adult == "adult_rn7_tab") {
       sh_layout_server(id = "adult_rn7", 
                        dataset = All_Groups_log_rn6_rn7, 
                        UMAP_label = "The Rat acute NAc dataset - rn7",
+                       cluster_names = cluster_names_adult,
                        assay = "RNArn7")
     }
 
@@ -139,6 +153,7 @@ server <- function(input, output) {
     sh_layout_server(id = "adult_mcn",
                      dataset = MCN_dataset,
                      UMAP_label = "The Rat acute and repeated NAc dataset - rn7",
+                     cluster_names = cluster_names_MCN,
                      EES_absent = TRUE)
   })
   
@@ -154,6 +169,7 @@ server <- function(input, output) {
       sh_layout_server(id = "culture",
                        dataset = Culture_log_rn6_rn7,
                        UMAP_label = "Primary striatal neuron culture - rn6",
+                       cluster_names = cluster_names_cult,
                        EES_absent = TRUE)
     }
     
@@ -161,6 +177,7 @@ server <- function(input, output) {
       sh_layout_server(id = "culture_rn7",
                        dataset = Culture_log_rn6_rn7,
                        UMAP_label = "Primary striatal neuron culture - rn7",
+                       cluster_names = cluster_names_cult,
                        EES_absent = TRUE,
                        assay = "RNArn7")
     }
@@ -179,6 +196,7 @@ server <- function(input, output) {
       sh_layout_server(id = "vta", 
                        dataset = VTA_dataset_rn6_rn7, 
                        UMAP_label = "The Rat VTA dataset - rn6",
+                       cluster_names = cluster_names_VTA,
                        EES_absent = TRUE)
     }
     
@@ -186,10 +204,26 @@ server <- function(input, output) {
       sh_layout_server(id = "vta_rn7", 
                        dataset = VTA_dataset_rn6_rn7, 
                        UMAP_label = "The Rat VTA dataset - rn7",
+                       cluster_names = cluster_names_VTA,
                        EES_absent = TRUE,
                        assay = "RNArn7")
     }
     
+  })
+  
+  observeEvent(input$dataset_tabs_VTA_pain, {
+    
+    if ((input$dataset_tabs_VTA_pain == "vta_pain_tab" ) && is.null(VTA_pain_dataset)) {
+      VTA_pain_dataset <<- readRDS(file = VTA_pain_dataset_path)
+      
+      Idents(object = VTA_pain_dataset) <<- factor(Idents(VTA_pain_dataset), levels = cluster_names_VTA_pain)
+    }
+    
+    sh_layout_server(id = "vta_pain",
+                     dataset = VTA_pain_dataset,
+                     UMAP_label = "The Rat VTA Pain dataset - rn7",
+                     cluster_names = cluster_names_VTA_pain,
+                     EES_absent = TRUE)
   })
 }
   
