@@ -4,7 +4,7 @@
 
 This section is written for the app developer(s) or contributors. **General users are encouraged to access the web app by the public instance / URL: <https://ratlas.org/>**
 
-**The Ratlas datasets** The on-disk data can be downloaded from the following link <https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg>. Only the lab and any developers have access to this folder. The folder has a `README` with relevant information about the data versioning.
+**The Ratlas datasets** The data can be downloaded from the following link <https://uab.box.com/s/jc4bgyqmzkrol74gtzo2hgcfdkxhikxg>. Only the lab and any developers have access to this folder. The folder has a `README` with relevant information about the data versioning.
 
 If you would like access to the original Seurat object, please contact Dr. Jeremy Day. You may find his contact information at the lab web page: <https://day-lab.org/uab>
 

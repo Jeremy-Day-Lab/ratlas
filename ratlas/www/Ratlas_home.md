@@ -50,11 +50,20 @@ __3) Primary striatal neurons (mixed from male and female E18 rat brains and cul
 <br>
 <br>
 
-__4) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
+__4) Adult rat ventral tegmental area (VTA) from naive male and female rats:__
 
 <br>
 
 <img src="Adult_VTA_snRNA-seq.jpg" align="center" width="850px" />
+
+<br>
+<br>
+
+__5) Adult rat ventral tegmental area (VTA) from male and female rats that received saline or morphine (10mg/kg) in a baseline (vehicle) or chronic pain (Complete Freund's Adjuvant, or CFA) state:__
+
+<br>
+
+<img src="Ratlas_VTA_Pain.jpg" align="center" width="850px" />
 
 <br>
 
