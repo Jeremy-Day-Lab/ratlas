@@ -50,11 +50,20 @@ __3) Primary striatal neurons (mixed from male and female E18 rat brains and cul
 <br>
 <br>
 
-__4) Adult rat ventral tegmental area (VTA) from naive male and female rats.__
+__4) Adult rat ventral tegmental area (VTA) from naive male and female rats:__
 
 <br>
 
 <img src="Adult_VTA_snRNA-seq.jpg" align="center" width="850px" />
+
+<br>
+<br>
+
+__5) Adult rat ventral tegmental area (VTA) from male and female rats that received saline or morphine (10mg/kg) in a baseline (vehicle) or chronic pain (Complete Freund's Adjuvant, or CFA) state:__
+
+<br>
+
+<img src="Ratlas_VTA_Pain.jpg" align="center" width="850px" />
 
 <br>
 
@@ -66,6 +75,8 @@ Savell, K.E.\*, Tuscher, J.J.\*, Zipperly, M.E\*, Duke, C.G.\*, Phillips III, R.
 Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D., Ianov, L., & Day, J.J. (Cell Reports, April, 2022). [_An atlas of transcriptionally defined cell populations in the rat ventral tegmental area._](https://www.cell.com/cell-reports/fulltext/S2211-1247%2822%2900364-3)  DOI: <https://doi.org/10.1016/j.celrep.2022.110616>
 
 Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Molecular and Cellular Neuroscience, June, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://doi.org/10.1016/j.mcn.2023.103849)  DOI: <https://doi.org/10.1016/j.mcn.2023.103849>
+
+Tuscher J.J., Cleere A., Phillips R.A., Newman C.E., Twa G.M., Robinson N.J., Ianov L., Sorge R.E. & Day J.J. (bioRxiv, September, 2025) [_Morphine regulates astrocyte transcriptional dynamics in the ventral tegmental area by stimulation of glucocorticoid signaling_](https://doi.org/10.1101/2025.09.22.677814) DOI: <https://doi.org/10.1101/2025.09.22.677814>
 
 ### Ratlas Citation:
 
