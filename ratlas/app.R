@@ -94,6 +94,18 @@ ui <- function(){
                                                          )
                                                 )
                                     )
+                           ),
+                           tabPanel(title = "NAc_TMP", ## TODO: nac_tmp or NAc_TMP are placeholder names
+                                    tabsetPanel(id = "dataset_tabs_NAc_TMP", type = "tabs",
+                                                tabPanel(title = "NAc_TMP - rn7", value = "nac_tmp_tab",
+                                                         sh_layout_UI(id = "nac_tmp",
+                                                                      group_choices = NAc_TMP_groups,
+                                                                      plot_choices = all_plots,
+                                                                      cluster_names = cluster_names_NAc_TMP,
+                                                                      correlation_label = no_EES
+                                                         )
+                                                )
+                                    )
                            )
                 ),
                 tags$style(HTML(".irs--shiny .irs-bar {
@@ -213,7 +225,7 @@ server <- function(input, output) {
   
   observeEvent(input$dataset_tabs_VTA_pain, {
     
-    if ((input$dataset_tabs_VTA_pain == "vta_pain_tab" ) && is.null(VTA_pain_dataset)) {
+    if ((input$dataset_tabs_VTA_pain == "vta_pain_tab") && is.null(VTA_pain_dataset)) {
       VTA_pain_dataset <<- readRDS(file = VTA_pain_dataset_path)
       
       Idents(object = VTA_pain_dataset) <<- factor(Idents(VTA_pain_dataset), levels = cluster_names_VTA_pain)
@@ -225,6 +237,21 @@ server <- function(input, output) {
                      cluster_names = cluster_names_VTA_pain,
                      EES_absent = TRUE)
   })
+  
+  observeEvent(input$dataset_tabs_NAc_TMP, {
+    
+    if ((input$dataset_tabs_NAc_TMP == "nac_tmp_tab") && is.null(NAc_TMP_dataset)) {
+      NAc_TMP_dataset <<- readRDS(file = NAc_TMP_dataset_path)
+      
+      Idents(object = NAc_TMP_dataset) <<- factor(Idents(NAc_TMP_dataset), levels = cluster_names_NAc_TMP)
+    }
+    
+    sh_layout_server(id = "nac_tmp",
+                     dataset = NAc_TMP_dataset,
+                     UMAP_label = "The Rat NAc_TMP dataset - rn7", #TODO - rename!
+                     cluster_names = cluster_names_NAc_TMP,
+                     EES_absent = TRUE)
+  })  
 }
   
 
