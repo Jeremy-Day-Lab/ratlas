@@ -3,10 +3,19 @@
 home_description <- tabPanel(title = "Home",
                              includeMarkdown("./www/Ratlas_home.md"),
                              tags$br(),
-                             HTML(
-                               "<center>
-                               <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=n&d=iIPr-XExkHg2hYOF1lT3nHdwwvsClutCG8OrW8Kfn9E&co=363636&cmo=d55e00&cmn=009e73'></script>
-                               </center>"
+                             tags$div(
+                               style = "text-align:center;",
+                               tags$a(
+                                 href   = "https://mapmyvisitors.com/web/1c5ld",
+                                 title  = "Visit tracker",
+                                 target = "_blank",
+                                 rel    = "noopener noreferrer",
+                                 tags$img(
+                                   src = "https://mapmyvisitors.com/map.png?cl=080808&w=a&t=n&d=XUwzaDUmgBeEdg5Jxn4tF0dAaeAvpf8FszNMlO6XRBA&co=ffffff&ct=808080",
+                                   alt = "Map of Ratlas visitors",
+                                   style = "border:0;"
+                                 )
+                               )
                              ),
                              tags$br()
 )

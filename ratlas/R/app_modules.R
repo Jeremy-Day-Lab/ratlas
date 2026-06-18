@@ -22,7 +22,7 @@ all_VTA_groups <- c("All", "Sex")
 all_VTA_pain_groups <- c("All", "Sex", "Veh_CFA", "Sal_Mor", "Veh_CFA_Sal_Mor",
                          "Veh_CFA_Sex", "Sal_Mor_Sex", "Veh_CFA_Sal_Mor_Sex")
 
-NAc_TMP_groups <- c("All", "Stim","Sex","Stim_Sex")
+NAc_2026_groups <- c("All", "Sex")
 
 # correlation plot UI message based EES data being present
 contains_EES <- "Type a gene or EES to correlate to gene name typed above"

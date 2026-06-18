@@ -96,13 +96,13 @@ ui <- function(){
                                                 )
                                     )
                            ),
-                           tabPanel(title = "NAc_TMP", value = "nav_nac_tmp", ## TODO: nac_tmp or NAc_TMP are placeholder names
-                                    tabsetPanel(id = "dataset_tabs_NAc_TMP", type = "tabs",
-                                                tabPanel(title = "NAc_TMP - rn7", value = "nac_tmp_tab",
-                                                         sh_layout_UI(id = "nac_tmp",
-                                                                      group_choices = NAc_TMP_groups,
+                           tabPanel(title = "NAc_2026", value = "nav_nac_2026",
+                                    tabsetPanel(id = "dataset_tabs_NAc_2026", type = "tabs",
+                                                tabPanel(title = "NAc_2026 - rn7", value = "nac_2026_tab",
+                                                         sh_layout_UI(id = "nac_2026",
+                                                                      group_choices = NAc_2026_groups,
                                                                       plot_choices = all_plots,
-                                                                      cluster_names = cluster_names_NAc_TMP,
+                                                                      cluster_names = cluster_names_NAc_2026,
                                                                       correlation_label = no_EES
                                                          )
                                                 )
@@ -251,21 +251,21 @@ server <- function(input, output) {
       }
     }
 
-    # ---- NAc_TMP ----
-    if (nav == "nav_nac_tmp") {
+    # ---- NAc_2026 ----
+    if (nav == "nav_nac_2026") {
 
-      if (is.null(NAc_TMP_dataset)) {
-        NAc_TMP_dataset <<- readRDS(file = NAc_TMP_dataset_path)
-        Idents(object = NAc_TMP_dataset) <<- factor(Idents(NAc_TMP_dataset), levels = cluster_names_NAc_TMP)
+      if (is.null(NAc_2026_dataset)) {
+        NAc_2026_dataset <<- readRDS(file = NAc_2026_dataset_path)
+        Idents(object = NAc_2026_dataset) <<- factor(Idents(NAc_2026_dataset), levels = cluster_names_NAc_2026)
       }
 
-      if (is.null(wired[["nav_nac_tmp"]])) {
-        wired[["nav_nac_tmp"]] <- TRUE
+      if (is.null(wired[["nav_nac_2026"]])) {
+        wired[["nav_nac_2026"]] <- TRUE
 
-        sh_layout_server(id = "nac_tmp",
-                         dataset = NAc_TMP_dataset,
-                         UMAP_label = "The Rat NAc_TMP dataset - rn7", #TODO - rename!
-                         cluster_names = cluster_names_NAc_TMP,
+        sh_layout_server(id = "nac_2026",
+                         dataset = NAc_2026_dataset,
+                         UMAP_label = "The Rat NAc_2026 dataset - rn7",
+                         cluster_names = cluster_names_NAc_2026,
                          EES_absent = TRUE)
       }
     }

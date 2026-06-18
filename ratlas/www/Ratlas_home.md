@@ -109,4 +109,4 @@ Notably, newer datasets published since then (adult acute and repeated NAc), hav
 ___
 ### About the app:
 
-This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. If you have questions or issues with the app, please open an issue in the GitHub repository of this app [located here](https://github.com/Jeremy-Day-Lab/ratlas).
+This app was developed and is actively maintained by Lara Ianov, Ph.D., Co-Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. If you have questions or issues with the app, please open an issue in the GitHub repository of this app [located here](https://github.com/Jeremy-Day-Lab/ratlas).
