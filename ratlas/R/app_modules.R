@@ -427,7 +427,7 @@ sh_layout_server <- function(id, dataset, UMAP_label, cluster_names, EES_absent 
       update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
       
       corr_plot <- reactive({
-        Scatter_feature(Seurat_object = dataset, split_type = input$group, cell_names = cluster_names,
+        Scatter_feature(Seurat_object = dataset, split_type = input$group, cell_names = "ident",
                         feature = update_gene(), feature2 = update_feature_corr(), idents = input$cluster_corr,
                         assay = assay)
       })

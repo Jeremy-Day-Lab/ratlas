@@ -66,6 +66,16 @@ __5) Adult rat ventral tegmental area (VTA) from male and female rats that recei
 <img src="Ratlas_VTA_Pain.jpg" align="center" width="850px" />
 
 <br>
+<br>
+
+__6) Adult rat nucleus accumbens (NAc) from male and female rats (2026):__
+
+<br>
+
+<img src="NAc_2026.jpg" align="center" width="850px" />
+
+<br>
+
 
 ----
 ### Datasets Citation:

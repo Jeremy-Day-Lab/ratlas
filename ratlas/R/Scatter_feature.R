@@ -2,6 +2,9 @@
 #' Generates a scatter plot of correlation between two features from a Seurat object
 #' @param Seurat_object A Seurat object
 #' @param split_type Factor to split the groups by. Default is show all / do not split.
+#' @param cell_names Name of the column holding the cell-type identities to subset on.
+#'   Use "ident" to pull the object's active identities (the default cell-type labels
+#'   set for every Ratlas dataset).
 #' @param feature First feature from 2 features to draw correlation from
 #' @param feature2 Second feature from 2 features to draw correlation from
 #' @param idents Which cell type / ident to draw the correlation from
@@ -12,7 +15,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' Scatter_feature(Seurat_object = input_obj, split_type = "All", cell_names = "CellType",
+#' Scatter_feature(Seurat_object = input_obj, split_type = "All", cell_names = "ident",
 #' feature = "Gad1", feature2 = "Gad2", idents = "Drd1-MSN", assay = "RNA")
 #' }
 Scatter_feature <- function(Seurat_object, split_type = "All", cell_names, feature, feature2, idents, assay = "RNA") {
@@ -21,20 +24,20 @@ Scatter_feature <- function(Seurat_object, split_type = "All", cell_names, featu
   Seurat_object <- change_assay(dataset = Seurat_object, assay = assay)
   
   if (split_type == "All") {
-    fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c(cell_names,feature,feature2),
-                                                   layer = "data"), 
-                                         cell_names == idents)
+    fetched_scatter_data <- FetchData(Seurat_object,
+                                      vars = c(cell_names, feature, feature2),
+                                      layer = "data")
     aes_mapping_colour <- NULL
     
   } else {
-    fetched_scatter_data <- base::subset(FetchData(Seurat_object,
-                                                   vars = c(cell_names,feature,feature2, split_type),
-                                                   layer = "data"),
-                                         cell_names == idents)
-    
+    fetched_scatter_data <- FetchData(Seurat_object,
+                                      vars = c(cell_names, feature, feature2, split_type),
+                                      layer = "data")
     aes_mapping_colour <- split_type
   }
+  
+  # Keep only cells of the requested cell type.
+  fetched_scatter_data <- fetched_scatter_data[fetched_scatter_data[[cell_names]] == idents, , drop = FALSE]
   
   # scatter plot with correlation value
   scatter_plot <- ggplot(fetched_scatter_data,
