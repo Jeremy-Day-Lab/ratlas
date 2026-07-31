@@ -66,6 +66,16 @@ __5) Adult rat ventral tegmental area (VTA) from male and female rats that recei
 <img src="Ratlas_VTA_Pain.jpg" align="center" width="850px" />
 
 <br>
+<br>
+
+__6) Adult rat nucleus accumbens (NAc) from male and female rats (2026):__
+
+<br>
+
+<img src="NAc_2026.jpg" align="center" width="850px" />
+
+<br>
+
 
 ----
 ### Datasets Citation:
@@ -76,7 +86,9 @@ Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D.,
 
 Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Molecular and Cellular Neuroscience, June, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://doi.org/10.1016/j.mcn.2023.103849)  DOI: <https://doi.org/10.1016/j.mcn.2023.103849>
 
-Tuscher J.J., Cleere A., Phillips R.A., Newman C.E., Twa G.M., Robinson N.J., Ianov L., Sorge R.E. & Day J.J. (bioRxiv, September, 2025) [_Morphine regulates astrocyte transcriptional dynamics in the ventral tegmental area by stimulation of glucocorticoid signaling_](https://doi.org/10.1101/2025.09.22.677814) DOI: <https://doi.org/10.1101/2025.09.22.677814>
+Tuscher J.J., Cleere A., Phillips R.A., Newman C.E., Twa G.M., Robinson N.J., Ianov L., Sorge R.E. & Day J.J. (eLife, April, 2026) [_Morphine regulates astrocyte transcriptional dynamics in the ventral tegmental area by stimulation of glucocorticoid signaling_](https://doi.org/10.7554/eLife.110697.1) DOI: <https://doi.org/10.7554/eLife.110697.1>
+
+Drake O.R., Fiore C.M., Jorgensen E.T., Newman C.E., Potter L.A., Trull A., Pradeep A., Ianov L., Peters J., Heinsbroek J.A. & Day J.J. (bioRxiv, July, 2026) [_A conserved population of genetically defined striatal neurons gates opioid reward_](https://www.biorxiv.org/content/10.64898/2026.07.28.741269v1) DOI: <https://doi.org/10.64898/2026.07.28.741269>
 
 ### Ratlas Citation:
 
@@ -109,4 +121,4 @@ Notably, newer datasets published since then (adult acute and repeated NAc), hav
 ___
 ### About the app:
 
-This app was developed and is actively maintained by Lara Ianov, Ph.D., Managing Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. If you have questions or issues with the app, please open an issue in the GitHub repository of this app [located here](https://github.com/Jeremy-Day-Lab/ratlas).
+This app was developed and is actively maintained by Lara Ianov, Ph.D., Co-Director of the [UAB Biological Data Science Core](https://www.uab.edu/cores/ircp/bds), and bioinformatics specialist for the Civitan International Research Center, at the University of Alabama at Birmingham. If you have questions or issues with the app, please open an issue in the GitHub repository of this app [located here](https://github.com/Jeremy-Day-Lab/ratlas).

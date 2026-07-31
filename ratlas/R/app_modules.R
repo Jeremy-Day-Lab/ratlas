@@ -22,6 +22,8 @@ all_VTA_groups <- c("All", "Sex")
 all_VTA_pain_groups <- c("All", "Sex", "Veh_CFA", "Sal_Mor", "Veh_CFA_Sal_Mor",
                          "Veh_CFA_Sex", "Sal_Mor_Sex", "Veh_CFA_Sal_Mor_Sex")
 
+NAc_2026_groups <- c("All", "Sex")
+
 # correlation plot UI message based EES data being present
 contains_EES <- "Type a gene or EES to correlate to gene name typed above"
 no_EES <- "Type a gene to correlate to gene name selected above"
@@ -425,7 +427,7 @@ sh_layout_server <- function(id, dataset, UMAP_label, cluster_names, EES_absent 
       update_feature_corr <- eventReactive(input$go_corr, {feature2_eval(input$feature_corr, dataset, EES_absent, assay = assay)})
       
       corr_plot <- reactive({
-        Scatter_feature(Seurat_object = dataset, split_type = input$group, cell_names = cluster_names,
+        Scatter_feature(Seurat_object = dataset, split_type = input$group, cell_names = "ident",
                         feature = update_gene(), feature2 = update_feature_corr(), idents = input$cluster_corr,
                         assay = assay)
       })

@@ -30,7 +30,9 @@ Phillips III, R.A.\* Tuscher, J.J.\*, Black, S.L., Andraka E., Fitzgerald, N.D.,
 
 Phillips III, R.A.\* Tuscher, J.J., Wan E., Fitzgerald, N.D., Zipperly, M.E, Duke, C.G., Ianov, L., & Day, J.J. (Molecular and Cellular Neuroscience, June, 2023). [_Distinct subpopulations of D1 medium spiny neurons exhibit unique transcriptional responsiveness to cocaine_](https://doi.org/10.1016/j.mcn.2023.103849)  DOI: <https://doi.org/10.1016/j.mcn.2023.103849>
 
-Tuscher J.J., Cleere A., Phillips R.A., Newman C.E., Twa G.M., Robinson N.J., Ianov L., Sorge R.E. & Day J.J. (bioRxiv, September, 2025) [_Morphine regulates astrocyte transcriptional dynamics in the ventral tegmental area by stimulation of glucocorticoid signaling_](https://doi.org/10.1101/2025.09.22.677814) DOI: <https://doi.org/10.1101/2025.09.22.677814>
+Tuscher J.J., Cleere A., Phillips R.A., Newman C.E., Twa G.M., Robinson N.J., Ianov L., Sorge R.E. & Day J.J. (eLife, April, 2026) [_Morphine regulates astrocyte transcriptional dynamics in the ventral tegmental area by stimulation of glucocorticoid signaling_](https://doi.org/10.7554/eLife.110697.1) DOI: <https://doi.org/10.7554/eLife.110697.1>
+
+Drake O.R., Fiore C.M., Jorgensen E.T., Newman C.E., Potter L.A., Trull A., Pradeep A., Ianov L., Peters J., Heinsbroek J.A. & Day J.J. (bioRxiv, July, 2026) [_A conserved population of genetically defined striatal neurons gates opioid reward_](https://www.biorxiv.org/content/10.64898/2026.07.28.741269v1) DOI: <https://doi.org/10.64898/2026.07.28.741269>
 
 ## Citation to Ratlas
 
